@@ -1,0 +1,48 @@
+{
+  "name": "nginxwebnodeplugin",
+  "version": "1.0.3",
+  "description": "A nginx proxy server configuration template for webNode.",
+  "documentationWebsite": {
+    "name": "nginxWebNodePlugin",
+    "trackingCode": "TODO"
+  },
+  "homepage": "http://torben.website/nginxWebNodePlugin",
+  "license": "CC-BY-3.0",
+  "main": "index.compiled.js",
+  "keywords": [
+    "web",
+    "backend",
+    "proxy",
+    "server",
+    "configuration",
+    "template"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thaibault/nginxWebNodePlugin.git"
+  },
+  "dependencies": {
+    "serverwebnodeplugin": "latest",
+    "templatewebnodeplugin": "latest",
+    "web-node": "latest"
+  },
+  "devDependencies": {
+    "documentation-website": "latest"
+  },
+  "scripts": {
+    "serve": "nginx",
+    "start": "npm run serve",
+    "update": "npm version patch && npm publish"
+  },
+  "webNode": {
+    "dependencies": ["server", "template"],
+    "server": {
+      "proxy": {
+        "logFilePath": {
+          "access": "/dev/stdout",
+          "error": "/dev/stderr"
+        }
+      }
+    }
+  }
+}
