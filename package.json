@@ -30,6 +30,7 @@
     "documentation-website": "latest"
   },
   "scripts": {
+    "clear": "rm npm-debug.log",
     "serve": "nginx",
     "start": "npm run serve",
     "update": "npm version patch && npm publish"
