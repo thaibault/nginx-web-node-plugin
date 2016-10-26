@@ -33,6 +33,7 @@
     "clear": "rm npm-debug.log",
     "serve": "nginx",
     "start": "npm run serve",
+    "test": "webNode",
     "update": "npm version patch && npm publish"
   },
   "webNode": {
