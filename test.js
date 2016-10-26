@@ -33,6 +33,10 @@ QUnit.test('exit', async (assert:Object):Promise<void> => {
     const services:Services = {nginx: {kill: ():void => {
         testValue = true
     }}}
+    // TODO Is only a base config with extended vars of this plugin not the
+    // dependent plugins included!
+    // TODO test rendering the tpls.
+    console.log('A', configuration)
     assert.deepEqual(await Index.exit(services, [], configuration), services)
     assert.ok(testValue)
 })
