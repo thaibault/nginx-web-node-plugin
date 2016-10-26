@@ -22,20 +22,31 @@
     "url": "https://github.com/thaibault/nginxWebNodePlugin.git"
   },
   "dependencies": {
+    "clientnode": "latest",
     "cmswebnodeplugin": "latest",
     "serverwebnodeplugin": "latest",
     "templatewebnodeplugin": "latest",
     "web-node": "latest"
   },
   "devDependencies": {
-    "documentation-website": "latest"
+    "documentation-website": "latest",
+    "qunit-cli": "latest",
+    "source-map-support": "latest"
   },
   "scripts": {
-    "clear": "rm npm-debug.log",
+    "build": "webOptimizer build",
+    "buildDLL": "webOptimizer buildDLL",
+    "clear": "webOptimizer clear && rm --force log.txt &>/dev/null",
+    "document": "webOptimizer document",
+    "lint": "webOptimizer typeCheck && webOptimizer lint",
+    "prepublish": "npm run build",
     "serve": "nginx",
     "start": "npm run serve",
-    "test": "webNode",
-    "update": "npm version patch && npm publish"
+    "test": "webOptimizer test",
+    "update": "npm version patch && npm publish",
+    "updateDocumentation": "documentationWebsite --log-level info",
+    "watch": "webOptimizer build --watch",
+    "watchDLL": "webOptimizer buildDLL --watch"
   },
   "webNode": {
     "dependencies": [
@@ -48,7 +59,8 @@
         "logFilePath": {
           "access": "/dev/stdout",
           "error": "/dev/stderr"
-        }
+        },
+        "ports": [443, 80]
       }
     }
   }
