@@ -22,6 +22,7 @@
     "url": "https://github.com/thaibault/nginxWebNodePlugin.git"
   },
   "dependencies": {
+    "cmswebnodeplugin": "latest",
     "serverwebnodeplugin": "latest",
     "templatewebnodeplugin": "latest",
     "web-node": "latest"
@@ -33,10 +34,12 @@
     "clear": "rm npm-debug.log",
     "serve": "nginx",
     "start": "npm run serve",
+    "test": "webNode",
     "update": "npm version patch && npm publish"
   },
   "webNode": {
     "dependencies": [
+      "cms",
       "server",
       "template"
     ],
