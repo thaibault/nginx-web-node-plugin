@@ -23,7 +23,7 @@ try {
 import configuration from 'web-node/configurator.compiled'
 import type {Services} from 'web-node/type'
 
-import Nginx from './index'
+import Index from './index'
 // endregion
 QUnit.module('index')
 QUnit.load()
@@ -37,12 +37,12 @@ QUnit.test('exit', async (assert:Object):Promise<void> => {
     const services:Services = {nginx: {kill: ():void => {
         testValue = true
     }}}
-    assert.deepEqual(await Ngninx.exit(services, [], configuration), services)
+    assert.deepEqual(await Index.exit(services, [], configuration), services)
     assert.ok(testValue)
 })
 QUnit.test('preLoadService', async (assert:Object):Promise<void> =>
     assert.deepEqual(
-        await Ngninx.preLoadService({nginx: {}}, configuration), {nginx: {}}))
+        await Index.preLoadService({nginx: {}}, configuration), {nginx: {}}))
 // endregion
 // region vim modline
 // vim: set tabstop=4 shiftwidth=4 expandtab:
