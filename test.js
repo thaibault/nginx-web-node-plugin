@@ -27,13 +27,15 @@ import type {Configuration, Services} from 'web-node/type'
 import Index from './index'
 // endregion
 (async ():Promise<any> => {
-    const configuration:Configuration = (await WebNodePluginAPI.loadALL(
-        baseConfiguration
-    )).configuration
+    const {configuration, plugins} = await WebNodePluginAPI.loadALL(
+        baseConfiguration)
     QUnit.module('index')
     QUnit.load()
-    // TODO test rendering the tpls.
     // region tests
+    QUnit.test('renderTemplates', async (assert:Object):Promise<void> => {
+        // TODO
+        assert.ok(true)
+    })
     // / region api
     QUnit.test('exit', async (assert:Object):Promise<void> => {
         let testValue:boolean = false
