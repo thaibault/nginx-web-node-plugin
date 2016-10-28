@@ -38,7 +38,7 @@ QUnit.test('exit', async (assert:Object):Promise<void> => {
     const services:Services = {nginx: {kill: ():void => {
         testValue = true
     }}}
-    assert.deepEqual(await Index.exit(services, [], configuration), services)
+    assert.deepEqual(await Index.exit(services, configuration), services)
     assert.ok(testValue)
 })
 QUnit.test('preLoadService', async (assert:Object):Promise<void> =>
