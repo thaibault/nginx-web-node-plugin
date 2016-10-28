@@ -38,12 +38,23 @@ QUnit.test('exit', async (assert:Object):Promise<void> => {
     const services:Services = {nginx: {kill: ():void => {
         testValue = true
     }}}
-    assert.deepEqual(await Index.exit(services, configuration), services)
+    try {
+        assert.deepEqual(await Index.exit(services, configuration), services)
+    } catch (error) {
+        console.error(error)
+    }
+    assert.deepEqual(services, {})
     assert.ok(testValue)
 })
-QUnit.test('preLoadService', async (assert:Object):Promise<void> =>
-    assert.deepEqual(
-        await Index.preLoadService({nginx: {}}, configuration), {nginx: {}}))
+QUnit.test('preLoadService', async (assert:Object):Promise<void> => {
+    try {
+        assert.deepEqual(await Index.preLoadService({
+            nginx: {}
+        }, configuration), {nginx: {}})
+    } catch (error) {
+        console.error(error)
+    }
+})
 // / endregion
 // / region helper
 QUnit.test('checkReachability', async (assert:Object):Promise<void> => {
