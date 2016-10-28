@@ -20,16 +20,19 @@ import * as QUnit from 'qunit-cli'
 try {
     module.require('source-map-support/register')
 } catch (error) {}
-import configuration from 'web-node/configurator.compiled'
-import type {Services} from 'web-node/type'
+import baseConfiguration from 'web-node/configurator'
+import WebNodePluginAPI from 'web-node/pluginAPI'
+import type {Configuration, Plugin, Services} from 'web-node/type'
 
 import Index from './index'
 // endregion
 QUnit.module('index')
 QUnit.load()
+const {plugins, configuration}:{
+    configuration:Configuration;
+    plugins:Array<Plugin>;
+} = WebNodePluginAPI.loadALL(baseConfiguration)
 // TODO test rendering the tpls.
-// TODO Is only a base config with extended vars of this plugin not the
-// dependent plugins included!
 console.log('A', configuration)
 // region tests
 // / region api
