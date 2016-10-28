@@ -20,25 +20,51 @@ import * as QUnit from 'qunit-cli'
 try {
     module.require('source-map-support/register')
 } catch (error) {}
-import configuration from 'web-node/configurator.compiled'
-import type {Services} from 'web-node/type'
+import baseConfiguration from 'web-node/configurator'
+import WebNodePluginAPI from 'web-node/pluginAPI'
+import type {Configuration, Plugin, Services} from 'web-node/type'
 
 import Index from './index'
 // endregion
 QUnit.module('index')
 QUnit.load()
+const {plugins, configuration}:{
+    configuration:Configuration;
+    plugins:Array<Plugin>;
+} = WebNodePluginAPI.loadALL(baseConfiguration)
+// TODO test rendering the tpls.
+console.log('A', configuration)
 // region tests
+// / region api
 QUnit.test('exit', async (assert:Object):Promise<void> => {
     let testValue:boolean = false
     const services:Services = {nginx: {kill: ():void => {
         testValue = true
     }}}
-    assert.deepEqual(await Index.exit(services, [], configuration), services)
+    try {
+        assert.deepEqual(await Index.exit(services, configuration), services)
+    } catch (error) {
+        console.error(error)
+    }
+    assert.deepEqual(services, {})
     assert.ok(testValue)
 })
-QUnit.test('preLoadService', async (assert:Object):Promise<void> =>
-    assert.deepEqual(
-        await Index.preLoadService({nginx: {}}, configuration), {nginx: {}}))
+QUnit.test('preLoadService', async (assert:Object):Promise<void> => {
+    try {
+        assert.deepEqual(await Index.preLoadService({
+            nginx: {}
+        }, configuration), {nginx: {}})
+    } catch (error) {
+        console.error(error)
+    }
+})
+// / endregion
+// / region helper
+QUnit.test('checkReachability', async (assert:Object):Promise<void> => {
+    assert.ok(await Index.checkReachability(configuration.server))
+    assert.notOk(await Index.checkReachability(configuration.server, false))
+})
+// / endregion
 // endregion
 // region vim modline
 // vim: set tabstop=4 shiftwidth=4 expandtab:
