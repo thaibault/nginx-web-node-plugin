@@ -15,6 +15,7 @@
     endregion
 */
 // region imports
+import fileSystem from 'fs'
 import * as QUnit from 'qunit-cli'
 // NOTE: Only needed for debugging this file.
 try {
@@ -33,8 +34,20 @@ import Index from './index'
     QUnit.load()
     // region tests
     QUnit.test('renderTemplates', async (assert:Object):Promise<void> => {
-        // TODO
+        const done:Function = assert.async()
+        // NOTE: Trigger template rendering.
+        try {
+            await WebNodePluginAPI.callStack(
+                'postConfigurationLoaded', plugins, configuration,
+                configuration, plugins.filter((plugin:Plugin):boolean =>
+                    Boolean(plugin.configurationFilePath)))
+            console.info(fileSystem.readFileSync('server.txt', {
+                encoding: configuration.encoding}))
+        } catch (error) {
+            console.error(error)
+        }
         assert.ok(true)
+        done()
     })
     // / region api
     QUnit.test('exit', async (assert:Object):Promise<void> => {

@@ -1,25 +1,26 @@
 # region global
+daemon                off;
 proxy_connect_timeout 1200s;
 proxy_send_timeout    1200s;
 proxy_read_timeout    1200s;
 send_timeout          1200s;
-proxy_set_header      Host "\${host}";
-proxy_set_header      X-Real-IP "\${remote_addr}";
-proxy_set_header      X-Forwarded-For "\${proxy_add_x_forwarded_for}";
+proxy_set_header      Host "${host}";
+proxy_set_header      X-Real-IP "${remote_addr}";
+proxy_set_header      X-Forwarded-For "${proxy_add_x_forwarded_for}";
 client_max_body_size  50M;
-charset               ${options.encoding};
-access_log            ${options.server.proxy.logFilePath.access};
-error_log             ${options.server.proxy.logFilePath.error} info;
+charset               <%- configuration.encoding %>
+access_log            <%- configuration.server.proxy.logFilePath.access %>;
+error_log             <%- configuration.server.proxy.logFilePath.error %> info;
 # endregion
-<% # region initialisation
-<% for file in __file__.directory:
-    <% if file.extension != TemplateParser.DEFAULT_FILE_EXTENSION:
-        <% file.remove_file()
-<% default_domain_name = ''
-<% for domain in options['frontend']['domains']:
-    <% if domain['default']:
-        <% default_domain_name = domain['name']
-        <% break
+<%# region initialisation %>
+<%
+default_domain_name = ''
+for (domain in options.frontend.domains)
+    if (domain.default) {
+        default_domain_name = domain.name
+        break
+    }
+%>
 <% host_name_prefix = given_command_line_arguments.proxy_host_name_prefix
 <% host_name_pattern = given_command_line_arguments.proxy_host_name_pattern
 <% proxy_ports = given_command_line_arguments.proxy_ports
@@ -29,7 +30,7 @@ error_log             ${options.server.proxy.logFilePath.error} info;
     <% fallback_default_domain_name = host_name_prefix + default_domain_name
     <% fallback_default_domain_pattern = StringExtension(
         <% host_name_prefix + default_domain_name
-    <% ).regex_validated.content
+    <% ).regex_validated.content/*region*//*endregion*/
 <% elif options['frontend']['domains']:
     <% fallback_default_domain_name = host_name_prefix + \
         <% options['frontend']['domains'][0]['name']
@@ -37,14 +38,14 @@ error_log             ${options.server.proxy.logFilePath.error} info;
         <% host_name_prefix + options['frontend']['domains'][0]['name']
     <% ).regex_validated.content
 <% else:
-    <% # Default domain will refere to currently given domain because no
-    <% # domain is currently active.
+    <%# Default domain will refere to currently given domain because no %>
+    <%# domain is currently active. %>
     <% fallback_default_domain_name = host_name_prefix + '${domain_name}'
     <% fallback_default_domain_pattern = StringExtension(
         <% host_name_prefix
     <% ).regex_validated.content + host_name_pattern
 <% def determine_certificate_file(domain_pattern, regex=false):
-    <% # Determine a valid certificate for given domain name or pattern.
+    <%# Determine a valid certificate for given domain name or pattern. %>
     <% best_match = ''
     <% certificate_file = key_file = None
     <% for folder in FileHandler(options['location']['certificate']):
@@ -62,9 +63,9 @@ error_log             ${options.server.proxy.logFilePath.error} info;
         <% else:
             <% if domain_pattern.startswith(host_name_prefix):
                 <% domain_pattern = domain_pattern[length(host_name_prefix):]
-            <% # NOTE: We match only one subdomain level since a wildcard
-            <% # domain only supports one sub domain level more than the
-            <% # certificates root domain itself.
+            <%# NOTE: We match only one subdomain level since a wildcard %>
+            <%# domain only supports one sub domain level more than the %>
+            <%# certificates root domain itself. %>
             <% match = RegularExpression('^(?:[^.]+\.)?%s$' % StringExtension(
                 <% folder.name
             <% ).regex_validated.content).match(domain_pattern)
@@ -82,18 +83,18 @@ error_log             ${options.server.proxy.logFilePath.error} info;
                 <% elif file.extension == 'key':
                     <% key_file = file
     <% return certificate_file, key_file
-<% # endregion
+<%# endregion %>
 <% for port in proxy_ports:
     # region <% port %>
-    <% # Copy proxy server redirects for each port to let each redirect hanlder
-    <% # remove it from the stack to avoid having redundant domain handling.
+    <%# Copy proxy server redirects for each port to let each redirect %>
+    <%# hanlder remove it from the stack to avoid having redundant domain handling.
     <% domain_redirects = deepCopy(options.get('proxyServerRedirects', {}))
-    <% # Handle all domains and provide a catch all default domain handler.
+    <%# Handle all domains and provide a catch all default domain handler.
     <% for domain in options['frontend']['domains'] + ['default']:
         # region <% domain if domain == 'default' else domain['name'] %>
-        <% # region external domain redirects wrapper
-        <% # Redirects which doesn't match registered domains and ports will be
-        <% # handled immediately before the catch all domain handler.
+        <%# region external domain redirects wrapper
+        <%# Redirects which doesn't match registered domains and ports will be
+        <%# handled immediately before the catch all domain handler.
         <% none_empty_domain_redirects = filter(
             <% lambda redirect: redirect[1], domain_redirects.items())
         <% if domain == 'default' and none_empty_domain_redirects:
@@ -104,19 +105,19 @@ error_log             ${options.server.proxy.logFilePath.error} info;
             <% for domain_pattern, redirects in none_empty_domain_redirects:
                 <% if '#ports#' not in redirects:
                     <% redirects['#ports#'] = [port]
-                <% # If there exist no domain (as default) we will integrate
-                <% # remaining redirects with matching ports into the default
-                <% # section. Check that we only handle domains which aren't in
-                <% # the proxy port list.
+                <%# If there exist no domain (as default) we will integrate
+                <%# remaining redirects with matching ports into the default
+                <%# section. Check that we only handle domains which aren't in
+                <%# the proxy port list.
                 <% for redirect_port in filter(
                     <% lambda port: default_domain_name or length(
                         <% options['frontend']['domains']
                     <% ) or domain_pattern != '#default#' or port not in
                     <% proxy_ports, copy(redirects['#ports#'])
                 <% ):
-                    <% # Avoid having a redirect which shadows other registered
-                    <% # domains. Only handle redirects which matches currently
-                    <% # handled port.
+                    <%# Avoid having a redirect which shadows other registered
+                    <%# domains. Only handle redirects which matches currently
+                    <%# handled port.
                     <% if(
                         <% redirect_port not in proxy_ports or
                         <% port == redirect_port
@@ -172,10 +173,10 @@ error_log             ${options.server.proxy.logFilePath.error} info;
                                     }
                             # endregion
                         }
-                <% # Remove redirects for currently handled port.
+                <%# Remove redirects for currently handled port.
                 <% domain_redirects[domain_pattern] = {}
             # endregion
-        <% # endregion
+        <%# endregion
         server {
             # region general
             # NOTE: This directive results in the variable "document_root"
@@ -200,7 +201,7 @@ error_log             ${options.server.proxy.logFilePath.error} info;
             # sharing restrictions.
             add_header                Access-Control-Allow-Origin http<% 's' if port == 80 else '' %>://${domain_name};
             # endregion
-            <% # region certificate wrapper
+            <%# region certificate wrapper
             <% if port == 443 and certificate_file and key_file:
                 # region certificate
                 ssl on;
@@ -212,8 +213,8 @@ error_log             ${options.server.proxy.logFilePath.error} info;
                 ssl_ciphers               "HIGH:!aNULL:!MD5 or HIGH:!aNULL:!MD5:!3DES";
                 ssl_prefer_server_ciphers on;
                 # endregion
-            <% # endregion
-            <% # region http authentication wrapper
+            <%# endregion
+            <%# region http authentication wrapper
             <% logins = ()
             <% if(
                 <% domain != 'default' and domain['login'] and
@@ -250,7 +251,7 @@ error_log             ${options.server.proxy.logFilePath.error} info;
                             }
                             <% break
                 # endregion
-            <% # endregion
+            <%# endregion
             # region mime types
             # NOTE: We have to add default mime types add the same level as we
             # add application specific one to avoid removing all default types.
@@ -293,8 +294,8 @@ error_log             ${options.server.proxy.logFilePath.error} info;
                 ## endregion
                 ## region static responses
                 <% for url, response in options['staticResponse'].items():
-                    <% # NOTE: Avoid authenticated urls if current url doesn't
-                    <% # need any authentication.
+                    <%# NOTE: Avoid authenticated urls if current url doesn't
+                    <%# need any authentication.
                     <% if not (response.get('disableAuthentication', false) and login):
                         location = "<% ('/login:' + login + ':' + password) if login else '' %><% url %>" {
                             <% if response.get('disableAuthentication', false) or login:
@@ -321,7 +322,7 @@ error_log             ${options.server.proxy.logFilePath.error} info;
                     return 301 "${scheme}://${domain_name}";
                 }
                 ## endregion
-                <% ## region plugin specific site level server behavior
+                <%## region plugin specific site level server behavior
                 <% pluginProxySiteConfiguration = callPluginStack(
                     <% data='', method_name='get_proxy_site_configuration',
                     <% arguments=(port, domain, __file__, login, password))
@@ -329,7 +330,7 @@ error_log             ${options.server.proxy.logFilePath.error} info;
                     ## region plugin specific site level server behavior
                     <% pluginProxySiteConfiguration.replace('\n', '\n    ').strip() %>
                     ## endregion
-                <% ## endregion
+                <%## endregion
                 ## region internal redirects
                 <% if not login:
                     # Redirect hash prefixed requests generally.
@@ -381,7 +382,7 @@ error_log             ${options.server.proxy.logFilePath.error} info;
                             auth_basic "off";
                         rewrite    "^.*$" "<% options['location']['htmlFile']['frontend'] %>" break;
                     }
-                    <% # Try to find a default site.
+                    <%# Try to find a default site.
                     <% default_url_suffix = None
                     <% if domain != 'default':
                         <% for url_suffix, site in filter(lambda site: site[1].get(
@@ -465,8 +466,8 @@ error_log             ${options.server.proxy.logFilePath.error} info;
                         <% if login:
                             auth_basic "off";
                         # region external location redirects
-                        <% # The default domain handler will grap all remaining
-                        <% # redirects if they matchs currently handled port.
+                        <%# The default domain handler will grap all remaining
+                        <%# redirects if they matchs currently handled port.
                         # NOTE: We have to inject our redirect here to ensure that
                         # the normal redirect rules take affect if nothing matches.
                         <% for domain_pattern, redirects in filter(lambda redirect: (
@@ -482,7 +483,7 @@ error_log             ${options.server.proxy.logFilePath.error} info;
                         <% ):
                             <% for source, target in redirects.items():
                                 <% if source == '#ports#':
-                                    <% # Mark current port as handled.
+                                    <%# Mark current port as handled.
                                     <% del redirects['#ports#'][redirects['#ports#'].index(port)]
                                 <% elif isTypeOf(target, Dictionary):
                                     <% if target.keys()[0] == '#proxy#':
@@ -518,7 +519,7 @@ error_log             ${options.server.proxy.logFilePath.error} info;
                                     if ($uri ~ "<% source.replace('#host_name_prefix#', StringExtension(host_name_prefix).regex_validated.content).replace('#default#', fallback_default_domain_pattern) %>") {
                                         return 301 "<% target.replace('#host_name_prefix#', host_name_prefix).replace('#default#', fallback_default_domain_name) %>";
                                     }
-                            <% # Mark all redirects as handled for current port.
+                            <%# Mark all redirects as handled for current port.
                             <% domain_redirects[domain_pattern] = {}
                         # endregion
                         if ($args ~ "^.+$") {
@@ -551,7 +552,7 @@ error_log             ${options.server.proxy.logFilePath.error} info;
                 ## endregion
                 # endregion
         }
-        <% # region www subdomain redirect wrapper
+        <%# region www subdomain redirect wrapper
         <% if(
             <% domain != 'default' and domain['wwwRedirect'] and
             <% RegularExpression('www\..+\..+$').match(domain['name'])
@@ -576,8 +577,8 @@ error_log             ${options.server.proxy.logFilePath.error} info;
                     # endregion
             }
             # endregion
-        <% # endregion
-        <% # region https to http or http to https redirect wrapper
+        <%# endregion
+        <%# region https to http or http to https redirect wrapper
         <% if port == 80 and 443 not in proxy_ports:
             # region https to http redirect
             # Performs a redirect for incoming encrypted requests to enforce
@@ -609,10 +610,10 @@ error_log             ${options.server.proxy.logFilePath.error} info;
                 return      301 "https://${domain_name}${request_uri}";
             }
             # endregion
-        <% # endregion
+        <%# endregion
         # endregion
     # endregion
-<% # region modline
-<% # vim: set tabstop=4 shiftwidth=4 expandtab:
-<% # vim: foldmethod=marker foldmarker=region,endregion:
-<% # endregion
+<%# region modline %>
+<%# vim: set tabstop=4 shiftwidth=4 expandtab: %>
+<%# vim: foldmethod=marker foldmarker=region,endregion: %>
+<%# endregion %>
