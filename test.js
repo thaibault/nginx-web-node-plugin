@@ -22,50 +22,62 @@ try {
 } catch (error) {}
 import baseConfiguration from 'web-node/configurator'
 import WebNodePluginAPI from 'web-node/pluginAPI'
-import type {Configuration, Plugin, Services} from 'web-node/type'
+import type {Configuration, Services} from 'web-node/type'
 
 import Index from './index'
 // endregion
-QUnit.module('index')
-QUnit.load()
-const {plugins, configuration}:{
-    configuration:Configuration;
-    plugins:Array<Plugin>;
-} = WebNodePluginAPI.loadALL(baseConfiguration)
-// TODO test rendering the tpls.
-console.log('A', configuration)
-// region tests
-// / region api
-QUnit.test('exit', async (assert:Object):Promise<void> => {
-    let testValue:boolean = false
-    const services:Services = {nginx: {kill: ():void => {
-        testValue = true
-    }}}
-    try {
-        assert.deepEqual(await Index.exit(services, configuration), services)
-    } catch (error) {
-        console.error(error)
-    }
-    assert.deepEqual(services, {})
-    assert.ok(testValue)
-})
-QUnit.test('preLoadService', async (assert:Object):Promise<void> => {
-    try {
-        assert.deepEqual(await Index.preLoadService({
-            nginx: {}
-        }, configuration), {nginx: {}})
-    } catch (error) {
-        console.error(error)
-    }
-})
-// / endregion
-// / region helper
-QUnit.test('checkReachability', async (assert:Object):Promise<void> => {
-    assert.ok(await Index.checkReachability(configuration.server))
-    assert.notOk(await Index.checkReachability(configuration.server, false))
-})
-// / endregion
-// endregion
+(async ():Promise<any> => {
+    const configuration:Configuration = (await WebNodePluginAPI.loadALL(
+        baseConfiguration
+    )).configuration
+    QUnit.module('index')
+    QUnit.load()
+    // TODO test rendering the tpls.
+    // region tests
+    // / region api
+    QUnit.test('exit', async (assert:Object):Promise<void> => {
+        let testValue:boolean = false
+        const services:Services = {nginx: {kill: ():void => {
+            testValue = true
+        }}}
+        try {
+            assert.deepEqual(
+                await Index.exit(services, configuration), services)
+        } catch (error) {
+            console.error(error)
+        }
+        assert.deepEqual(services, {})
+        assert.ok(testValue)
+    })
+    QUnit.test('preLoadService', async (assert:Object):Promise<void> => {
+        try {
+            assert.deepEqual(await Index.preLoadService({
+                nginx: {}
+            }, configuration), {nginx: {}})
+        } catch (error) {
+            console.error(error)
+        }
+    })
+    // / endregion
+    // / region helper
+    QUnit.test('checkReachability', async (assert:Object):Promise<void> => {
+        const done:Function = assert.async()
+        try {
+            await Index.checkReachability(configuration.server, false, 0.2)
+        } catch (error) {
+            assert.ok(true)
+        }
+        try {
+            await Index.checkReachability(configuration.server, true, 0.2)
+            assert.ok(true)
+        } catch (error) {
+            console.error(error)
+        }
+        done()
+    })
+    // / endregion
+    // endregion
+})()
 // region vim modline
 // vim: set tabstop=4 shiftwidth=4 expandtab:
 // vim: foldmethod=marker foldmarker=region,endregion:

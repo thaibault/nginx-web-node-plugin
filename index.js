@@ -76,21 +76,26 @@ export default class Nginx {
      * object.
      * @param inverse - Boolean indicating if we should check for reachability
      * or unreachability.
+     * @param timeoutInSeconds - Delay after assuming given resource isn't
+     * available if no response is coming.
      * @returns A promise which will be resolved if a request to given url has
      * (not) finished. Otherwise returned promise will be rejected.
      */
     static async checkReachability(
-        serverConfiguration:Configuration, inverse:boolean = true
+        serverConfiguration:Configuration, inverse:boolean = false,
+        timeoutInSeconds:number = 10
     ):Promise<Object> {
-        const url:string = 'http' + ((
-            serverConfiguration.proxy.ports.length > 0 &&
-            serverConfiguration.proxy.ports[0] === 443
-        ) ? 's' : '') + `://` +
-        `${serverConfiguration.application.hostName}:` +
-        `${serverConfiguration.application.ports[0]}`
-        return await inverse ? Tools.checkUnreachability(
-            url, true
-        ) : Tools.checkReachability(url, true)
+        if (serverConfiguration.proxy.ports.length > 0) {
+            const url:string = 'http' + ((
+                serverConfiguration.proxy.ports[0] === 443
+            ) ? 's' : '') + `://` +
+            `${serverConfiguration.application.hostName}:` +
+            `${serverConfiguration.proxy.ports[0]}`
+            return await (inverse ? Tools.checkUnreachability(
+                url, true
+            ) : Tools.checkReachability(url, true, 200, timeoutInSeconds))
+        }
+        return {}
     }
 }
 // endregion
