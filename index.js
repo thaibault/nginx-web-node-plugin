@@ -35,15 +35,15 @@ export default class Nginx {
     /**
      * Application will be closed soon.
      * @param services - An object with stored service instances.
-     * @param plugins - Topological sorted list of plugins.
      * @param configuration - Mutable by plugins extended configuration object.
      * @returns Given object of services.
      */
     static async exit(
-        services:Services, plugins:Array<Plugin>, configuration:Configuration
+        services:Services, configuration:Configuration
     ):Services {
         services.nginx.kill('SIGINT')
-        await Nginx.checkReachability(configuration, true)
+        await Nginx.checkReachability(configuration.server, true)
+        delete services.nginx
         return services
     }
     /**
@@ -66,27 +66,28 @@ export default class Nginx {
             for (const closeEventName:string of Tools.closeEventNames)
                 services.nginx.on(closeEventName, Tools.getProcessCloseHandler(
                     Tools.noop, Tools.noop, closeEventName))
-            await Nginx.checkReachability(configuration)
+            await Nginx.checkReachability(configuration.server)
         }
         return services
     }
     /**
      * Check if a nginx server is currently (not) running.
-     * @param configuration - Mutable by plugins extended configuration object.
+     * @param serverConfiguration - Mutable by plugins extended configuration
+     * object.
      * @param inverse - Boolean indicating if we should check for reachability
      * or unreachability.
      * @returns A promise which will be resolved if a request to given url has
      * (not) finished. Otherwise returned promise will be rejected.
      */
     static async checkReachability(
-        configuration:Configuration, inverse:boolean = true
+        serverConfiguration:Configuration, inverse:boolean = true
     ):Promise<Object> {
         const url:string = 'http' + ((
-            configuration.server.proxy.ports.length > 0 &&
-            configuration.server.proxy.ports[0] === 443
+            serverConfiguration.proxy.ports.length > 0 &&
+            serverConfiguration.proxy.ports[0] === 443
         ) ? 's' : '') + `://` +
-        `${configuration.server.application.hostName}:` +
-        `${configuration.server.application.ports[0]}`
+        `${serverConfiguration.application.hostName}:` +
+        `${serverConfiguration.application.ports[0]}`
         return await inverse ? Tools.checkUnreachability(
             url, true
         ) : Tools.checkReachability(url, true)

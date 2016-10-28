@@ -32,6 +32,7 @@ QUnit.load()
 // dependent plugins included!
 console.log('A', configuration)
 // region tests
+// / region api
 QUnit.test('exit', async (assert:Object):Promise<void> => {
     let testValue:boolean = false
     const services:Services = {nginx: {kill: ():void => {
@@ -43,6 +44,13 @@ QUnit.test('exit', async (assert:Object):Promise<void> => {
 QUnit.test('preLoadService', async (assert:Object):Promise<void> =>
     assert.deepEqual(
         await Index.preLoadService({nginx: {}}, configuration), {nginx: {}}))
+// / endregion
+// / region helper
+QUnit.test('checkReachability', async (assert:Object):Promise<void> => {
+    assert.ok(await Index.checkReachability(configuration.server))
+    assert.notOk(await Index.checkReachability(configuration.server, false))
+})
+// / endregion
 // endregion
 // region vim modline
 // vim: set tabstop=4 shiftwidth=4 expandtab:
