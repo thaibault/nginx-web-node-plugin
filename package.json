@@ -24,6 +24,7 @@
   "dependencies": {
     "clientnode": "latest",
     "cmswebnodeplugin": "latest",
+    "databasewebnodeplugin": "latest",
     "serverwebnodeplugin": "latest",
     "templatewebnodeplugin": "latest",
     "web-node": "latest"
