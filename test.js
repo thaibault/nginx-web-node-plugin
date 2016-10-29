@@ -30,9 +30,7 @@ import Index from './index'
     const configuration:Configuration = (await WebNodePluginAPI.loadALL(
         baseConfiguration
     )).configuration
-    QUnit.module('index')
     QUnit.load()
-    // TODO test rendering the tpls.
     // region tests
     // / region api
     QUnit.test('exit', async (assert:Object):Promise<void> => {
