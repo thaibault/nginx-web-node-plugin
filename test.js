@@ -15,7 +15,6 @@
     endregion
 */
 // region imports
-import fileSystem from 'fs'
 import * as QUnit from 'qunit-cli'
 // NOTE: Only needed for debugging this file.
 try {
@@ -28,8 +27,9 @@ import type {Configuration, Services} from 'web-node/type'
 import Index from './index'
 // endregion
 (async ():Promise<any> => {
-    const {configuration, plugins} = await WebNodePluginAPI.loadALL(
-        baseConfiguration)
+    const configuration:Configuration = (await WebNodePluginAPI.loadALL(
+        baseConfiguration
+    )).configuration
     QUnit.load()
     // region tests
     // / region api
