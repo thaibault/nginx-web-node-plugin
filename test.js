@@ -33,22 +33,6 @@ import Index from './index'
     QUnit.module('index')
     QUnit.load()
     // region tests
-    QUnit.test('renderTemplates', async (assert:Object):Promise<void> => {
-        const done:Function = assert.async()
-        // NOTE: Trigger template rendering.
-        try {
-            await WebNodePluginAPI.callStack(
-                'postConfigurationLoaded', plugins, configuration,
-                configuration, plugins.filter((plugin:Plugin):boolean =>
-                    Boolean(plugin.configurationFilePath)))
-            console.info(fileSystem.readFileSync('server.txt', {
-                encoding: configuration.encoding}))
-        } catch (error) {
-            console.error(error)
-        }
-        assert.ok(true)
-        done()
-    })
     // / region api
     QUnit.test('exit', async (assert:Object):Promise<void> => {
         let testValue:boolean = false
