@@ -30,7 +30,6 @@ import Index from './index'
 (async ():Promise<any> => {
     const {configuration, plugins} = await WebNodePluginAPI.loadALL(
         baseConfiguration)
-    QUnit.module('index')
     QUnit.load()
     // region tests
     // / region api
