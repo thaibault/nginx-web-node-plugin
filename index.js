@@ -5,7 +5,7 @@
 'use strict'
 /* !
     region header
-    [Project page](http://torben.website/databaseWebNodePlugin)
+    [Project page](http://torben.website/nginxWebNodePlugin)
 
     Copyright Torben Sickert (info["~at~"]torben.website) 16.12.2012
 
