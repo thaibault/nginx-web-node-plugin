@@ -83,7 +83,7 @@ export default class Nginx {
      */
     static async checkReachability(
         serverConfiguration:Configuration, inverse:boolean = false,
-        timeoutInSeconds:number = 10
+        timeoutInSeconds:number = 3
     ):Promise<Object> {
         if (serverConfiguration.proxy.ports.length > 0) {
             const url:string = 'http' + ((
