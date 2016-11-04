@@ -34,7 +34,7 @@
   "scripts": {
     "build": "webOptimizer build",
     "buildDLL": "webOptimizer buildDLL",
-    "clear": "webOptimizer clear && rm --force server.txt &>/dev/null",
+    "clear": "webOptimizer clear",
     "document": "webOptimizer document",
     "lint": "webOptimizer typeCheck && webOptimizer lint",
     "prepublish": "npm run build",
