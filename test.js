@@ -27,7 +27,7 @@ import type {Configuration, Services} from 'web-node/type'
 import Index from './index'
 // endregion
 (async ():Promise<any> => {
-    const configuration:Configuration = (await WebNodePluginAPI.loadALL(
+    const configuration:Configuration = (await WebNodePluginAPI.loadAll(
         baseConfiguration
     )).configuration
     QUnit.load()
