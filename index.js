@@ -38,7 +38,7 @@ export default class Nginx {
      * @param configuration - Mutable by plugins extended configuration object.
      * @returns Given object of services.
      */
-    static async exit(
+    static async shouldExit(
         services:Services, configuration:Configuration
     ):Services {
         services.nginx.kill('SIGINT')
