@@ -33,25 +33,25 @@ import Index from './index'
     QUnit.load()
     // region tests
     // / region api
-    QUnit.test('exit', async (assert:Object):Promise<void> => {
+    QUnit.test('shouldExit', async (assert:Object):Promise<void> => {
         let testValue:boolean = false
         const services:Services = {nginx: {kill: ():void => {
             testValue = true
         }}}
         try {
             assert.deepEqual(
-                await Index.exit(services, configuration), services)
+                await Index.shouldExit(services, configuration), services)
         } catch (error) {
             console.error(error)
         }
         assert.deepEqual(services, {})
         assert.ok(testValue)
     })
-    QUnit.test('preLoadService', async (assert:Object):Promise<void> => {
+    QUnit.test('loadService', async (assert:Object):Promise<void> => {
         try {
-            assert.deepEqual(await Index.preLoadService({
-                nginx: {}
-            }, configuration), {nginx: {}})
+            assert.strictEqual(
+                await Index.loadService({}, {nginx: null}, configuration), null
+            )
         } catch (error) {
             console.error(error)
         }
