@@ -32,6 +32,7 @@ import type {Configuration, Services} from 'web-node/type'
  * an event.
  */
 export default class Nginx {
+    // region api
     /**
      * Application will be closed soon.
      * @param services - An object with stored service instances.
@@ -47,15 +48,21 @@ export default class Nginx {
         return services
     }
     /**
-     * Appends an application server to the web node services.
+     * Start nginx's child process and return a Promise which observes this
+     * service.
+     * @param servicePromises - An object with stored service promise
+     * instances.
      * @param services - An object with stored service instances.
      * @param configuration - Mutable by plugins extended configuration object.
-     * @returns Given and extended object of services.
+     * @returns A promise which correspond to the plugin specific continues
+     * service.
      */
-    static async preLoadService(
-        services:Services, configuration:Configuration
-    ):Services {
+    static async loadService(
+        servicePromises:{[key:string]:Promise<Object>}, services:Services,
+        configuration:Configuration
+    ):Promise<?{promise:Promise<Object>}> {
         if (!services.hasOwnProperty('nginx')) {
+            console.log('A')
             services.nginx = spawnChildProcess(
                 'nginx', [], {
                     cwd: process.cwd(),
@@ -63,13 +70,28 @@ export default class Nginx {
                     shell: true,
                     stdio: 'inherit'
                 })
+            console.log('B')
+            const promise:Promise<Object> = new Promise((
+                resolve:Function, reject:Function
+            ):void => {
+                for (const closeEventName:string of Tools.closeEventNames)
+                    services.nginx.on(
+                        closeEventName, Tools.getProcessCloseHandler(
+                            resolve, reject, {
+                                reason: closeEventName,
+                                process: services.nginx
+                            }))
+            })
             for (const closeEventName:string of Tools.closeEventNames)
                 services.nginx.on(closeEventName, Tools.getProcessCloseHandler(
                     Tools.noop, Tools.noop, closeEventName))
             await Nginx.checkReachability(configuration.server)
+            return {promise}
         }
-        return services
+        return services.nginx
     }
+    // endregion
+    // region helper
     /**
      * Check if a nginx server is currently (not) running.
      * @param serverConfiguration - Mutable by plugins extended configuration
@@ -97,6 +119,7 @@ export default class Nginx {
         }
         return {}
     }
+    // endregion
 }
 // endregion
 // region vim modline
