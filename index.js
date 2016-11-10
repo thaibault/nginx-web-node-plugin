@@ -62,7 +62,6 @@ export default class Nginx {
         configuration:Configuration
     ):Promise<?{promise:Promise<Object>}> {
         if (!services.hasOwnProperty('nginx')) {
-            console.log('A')
             services.nginx = spawnChildProcess(
                 'nginx', [], {
                     cwd: process.cwd(),
@@ -70,7 +69,6 @@ export default class Nginx {
                     shell: true,
                     stdio: 'inherit'
                 })
-            console.log('B')
             const promise:Promise<Object> = new Promise((
                 resolve:Function, reject:Function
             ):void => {
