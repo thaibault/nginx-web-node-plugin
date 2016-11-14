@@ -71,7 +71,7 @@ export default class Nginx {
                     shell: true,
                     stdio: 'inherit'
                 })
-            let promise:Promise<Object> = new Promise((
+            let promise:?Promise<Object> = new Promise((
                 resolve:Function, reject:Function
             ):void => {
                 let finished:boolean = false
