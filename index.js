@@ -42,8 +42,10 @@ export default class Nginx {
     static async shouldExit(
         services:Services, configuration:Configuration
     ):Services {
-        services.nginx.kill('SIGINT')
-        await Nginx.checkReachability(configuration.server, true)
+        if (services.nginx !== null) {
+            services.nginx.kill('SIGINT')
+            await Nginx.checkReachability(configuration.server, true)
+        }
         delete services.nginx
         return services
     }
@@ -72,18 +74,27 @@ export default class Nginx {
             const promise:Promise<Object> = new Promise((
                 resolve:Function, reject:Function
             ):void => {
+                let finished:boolean = false
                 for (const closeEventName:string of Tools.closeEventNames)
                     services.nginx.on(
                         closeEventName, Tools.getProcessCloseHandler(
-                            resolve, reject, {
-                                reason: closeEventName,
-                                process: services.nginx
+                            resolve, (
+                                configuration.server.proxy.optional
+                            ) ? resolve : reject, {
+                                reason: closeEventName, process: services.nginx
                             }))
             })
-            for (const closeEventName:string of Tools.closeEventNames)
-                services.nginx.on(closeEventName, Tools.getProcessCloseHandler(
-                    Tools.noop, Tools.noop, closeEventName))
-            await Nginx.checkReachability(configuration.server)
+            try {
+                await Nginx.checkReachability(configuration.server)
+            } catch (error) {
+                if (configuration.server.proxy.optional) {
+                    console.warn(
+                        `Nginx couldn't be started but was marked as optional.`
+                    )
+                    services.nginx = null
+                } else
+                    throw error
+            }
             return {promise}
         }
         return services.nginx
