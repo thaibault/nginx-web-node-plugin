@@ -62,7 +62,7 @@ export default class Nginx {
     static async loadService(
         servicePromises:{[key:string]:Promise<Object>}, services:Services,
         configuration:Configuration
-    ):Promise<?{promise:Promise<Object>}> {
+    ):Promise<?{name:string;promise:Promise<Object>}> {
         if (!services.hasOwnProperty('nginx')) {
             services.nginx = spawnChildProcess(
                 'nginx', [], {
@@ -81,7 +81,7 @@ export default class Nginx {
                             resolve, (
                                 configuration.server.proxy.optional
                             ) ? resolve : reject, {
-                                reason: closeEventName, process: services.nginx
+                                reason: services.nginx, process: services.nginx
                             }))
             })
             try {
@@ -95,7 +95,7 @@ export default class Nginx {
                 } else
                     throw error
             }
-            return {promise}
+            return {name: 'nginx', promise}
         }
         return services.nginx
     }
