@@ -62,7 +62,7 @@ export default class Nginx {
     static async loadService(
         servicePromises:{[key:string]:Promise<Object>}, services:Services,
         configuration:Configuration
-    ):Promise<?{name:string;promise:Promise<Object>}> {
+    ):Promise<?{name:string;promise:?Promise<Object>}> {
         if (!services.hasOwnProperty('nginx')) {
             services.nginx = spawnChildProcess(
                 'nginx', [], {
@@ -71,7 +71,7 @@ export default class Nginx {
                     shell: true,
                     stdio: 'inherit'
                 })
-            const promise:Promise<Object> = new Promise((
+            let promise:Promise<Object> = new Promise((
                 resolve:Function, reject:Function
             ):void => {
                 let finished:boolean = false
@@ -92,6 +92,7 @@ export default class Nginx {
                         `Nginx couldn't be started but was marked as optional.`
                     )
                     services.nginx = null
+                    promise = null
                 } else
                     throw error
             }
