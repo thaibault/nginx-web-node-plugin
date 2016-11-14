@@ -52,6 +52,7 @@
     ],
     "server": {
       "proxy": {
+        "optional": true,
         "logFilePath": {
           "access": "/dev/stdout",
           "error": "/dev/stderr"
