@@ -1,14 +1,13 @@
 {
   "name": "nginxwebnodeplugin",
   "version": "1.0.21",
+  "license": "CC-BY-3.0",
   "description": "A nginx proxy server configuration template for webNode.",
+  "homepage": "http://torben.website/nginxWebNodePlugin",
   "documentationWebsite": {
     "name": "nginxWebNodePlugin",
     "trackingCode": "TODO"
   },
-  "homepage": "http://torben.website/nginxWebNodePlugin",
-  "license": "CC-BY-3.0",
-  "main": "index.compiled.js",
   "keywords": [
     "web",
     "backend",
@@ -17,19 +16,10 @@
     "configuration",
     "template"
   ],
+  "main": "index.compiled.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/thaibault/nginxWebNodePlugin.git"
-  },
-  "dependencies": {
-    "clientnode": "latest",
-    "serverwebnodeplugin": "latest",
-    "web-node": "latest"
-  },
-  "devDependencies": {
-    "documentation-website": "latest",
-    "qunit-cli": "latest",
-    "source-map-support": "latest"
   },
   "scripts": {
     "build": "webOptimizer build",
@@ -45,6 +35,16 @@
     "updateDocumentation": "documentationWebsite --log-level info",
     "watch": "webOptimizer build --watch",
     "watchDLL": "webOptimizer buildDLL --watch"
+  },
+  "dependencies": {
+    "clientnode": "latest",
+    "serverwebnodeplugin": "latest",
+    "web-node": "latest"
+  },
+  "devDependencies": {
+    "documentation-website": "latest",
+    "qunit-cli": "latest",
+    "source-map-support": "latest"
   },
   "webNode": {
     "dependencies": [
