@@ -15,7 +15,7 @@
     endregion
 */
 // region imports
-import * as QUnit from 'qunit-cli'
+import registerTest from 'clientnode/test'
 // NOTE: Only needed for debugging this file.
 try {
     module.require('source-map-support/register')
@@ -26,14 +26,13 @@ import type {Configuration, Services} from 'web-node/type'
 
 import Index from './index'
 // endregion
-(async ():Promise<any> => {
+registerTest(async function():Promise<void> {
     const configuration:Configuration = (await WebNodePluginAPI.loadAll(
         baseConfiguration
     )).configuration
-    QUnit.load()
     // region tests
     // / region api
-    QUnit.test('shouldExit', async (assert:Object):Promise<void> => {
+    this.test('shouldExit', async (assert:Object):Promise<void> => {
         let testValue:boolean = false
         const services:Services = {nginx: {kill: ():void => {
             testValue = true
@@ -47,7 +46,7 @@ import Index from './index'
         assert.deepEqual(services, {})
         assert.ok(testValue)
     })
-    QUnit.test('loadService', async (assert:Object):Promise<void> => {
+    this.test('loadService', async (assert:Object):Promise<void> => {
         try {
             assert.strictEqual(
                 await Index.loadService({}, {nginx: null}, configuration), null
@@ -58,7 +57,7 @@ import Index from './index'
     })
     // / endregion
     // / region helper
-    QUnit.test('checkReachability', async (assert:Object):Promise<void> => {
+    this.test('checkReachability', async (assert:Object):Promise<void> => {
         const done:Function = assert.async()
         try {
             await Index.checkReachability(configuration.server, false, 0.2)
@@ -75,7 +74,7 @@ import Index from './index'
     })
     // / endregion
     // endregion
-})()
+}, ['plain'])
 // region vim modline
 // vim: set tabstop=4 shiftwidth=4 expandtab:
 // vim: foldmethod=marker foldmarker=region,endregion:
