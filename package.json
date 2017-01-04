@@ -43,7 +43,6 @@
   },
   "devDependencies": {
     "documentation-website": "latest",
-    "qunit-cli": "latest",
     "source-map-support": "latest"
   },
   "webNode": {
