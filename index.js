@@ -31,22 +31,7 @@ import type {Configuration, ServicePromises, Services} from 'web-node/type'
  * Launches an application server und triggers all some pluginable hooks on
  * an event.
  */
-e    /**
-     * Application will be closed soon.
-     * @param services - An object with stored service instances.
-     * @param configuration - Mutable by plugins extended configuration object.
-     * @returns Given object of services.
-     */
-    static async shouldExit(
-        services:Services, configuration:Configuration
-    ):Services {
-        if (services.nginx !== null) {
-            services.nginx.kill('SIGINT')
-            await Nginx.checkReachability(configuration.server, true)
-        }
-        delete services.nginx
-        return services
-    }xport default class Nginx {
+export default class Nginx {
     // region api
     /**
      * Start nginx's child process and return a Promise which observes this
