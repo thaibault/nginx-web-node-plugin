@@ -24,7 +24,7 @@ import Tools from 'clientnode'
 try {
     require('source-map-support/register')
 } catch (error) {}
-import type {Configuration, Services} from 'web-node/type'
+import type {Configuration, ServicePromises, Services} from 'web-node/type'
 // endregion
 // region plugins/classes
 /**
@@ -60,7 +60,7 @@ export default class Nginx {
      * service.
      */
     static async loadService(
-        servicePromises:{[key:string]:Promise<Object>}, services:Services,
+        servicePromises:ServicePromises, services:Services,
         configuration:Configuration
     ):Promise<?{name:string;promise:?Promise<Object>}> {
         if (!services.hasOwnProperty('nginx')) {
