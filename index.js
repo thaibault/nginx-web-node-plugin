@@ -17,7 +17,7 @@
     See http://creativecommons.org/licenses/by/3.0/deed.de
     endregion
 */
-// region  imports
+// region imports
 import {spawn as spawnChildProcess} from 'child_process'
 import Tools from 'clientnode'
 // NOTE: Only needed for debugging this file.
@@ -31,9 +31,7 @@ import type {Configuration, ServicePromises, Services} from 'web-node/type'
  * Launches an application server und triggers all some pluginable hooks on
  * an event.
  */
-export default class Nginx {
-    // region api
-    /**
+e    /**
      * Application will be closed soon.
      * @param services - An object with stored service instances.
      * @param configuration - Mutable by plugins extended configuration object.
@@ -48,7 +46,8 @@ export default class Nginx {
         }
         delete services.nginx
         return services
-    }
+    }xport default class Nginx {
+    // region api
     /**
      * Start nginx's child process and return a Promise which observes this
      * service.
@@ -99,6 +98,22 @@ export default class Nginx {
             return {name: 'nginx', promise}
         }
         return services.nginx
+    }
+    /**
+     * Application will be closed soon.
+     * @param services - An object with stored service instances.
+     * @param configuration - Mutable by plugins extended configuration object.
+     * @returns Given object of services.
+     */
+    static async shouldExit(
+        services:Services, configuration:Configuration
+    ):Services {
+        if (services.nginx !== null) {
+            services.nginx.kill('SIGINT')
+            await Nginx.checkReachability(configuration.server, true)
+        }
+        delete services.nginx
+        return services
     }
     // endregion
     // region helper

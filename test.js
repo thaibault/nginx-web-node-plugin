@@ -32,6 +32,15 @@ registerTest(async function():Promise<void> {
     )).configuration
     // region tests
     // / region api
+    this.test('loadService', async (assert:Object):Promise<void> => {
+        try {
+            assert.strictEqual(
+                await Index.loadService({}, {nginx: null}, configuration), null
+            )
+        } catch (error) {
+            console.error(error)
+        }
+    })
     this.test('shouldExit', async (assert:Object):Promise<void> => {
         let testValue:boolean = false
         const services:Services = {nginx: {kill: ():void => {
@@ -45,15 +54,6 @@ registerTest(async function():Promise<void> {
         }
         assert.deepEqual(services, {})
         assert.ok(testValue)
-    })
-    this.test('loadService', async (assert:Object):Promise<void> => {
-        try {
-            assert.strictEqual(
-                await Index.loadService({}, {nginx: null}, configuration), null
-            )
-        } catch (error) {
-            console.error(error)
-        }
     })
     // / endregion
     // / region helper
