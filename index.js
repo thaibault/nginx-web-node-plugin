@@ -18,7 +18,9 @@
     endregion
 */
 // region imports
-import {spawn as spawnChildProcess} from 'child_process'
+import {
+    ChildProcess, exec as executeChildProcess, spawn as spawnChildProcess
+} from 'child_process'
 import Tools from 'clientnode'
 // NOTE: Only needed for debugging this file.
 try {
@@ -48,13 +50,12 @@ export default class Nginx {
         configuration:Configuration
     ):Promise<?{name:string;promise:?Promise<Object>}> {
         if (!services.hasOwnProperty('nginx')) {
-            services.nginx = spawnChildProcess(
-                'nginx', [], {
-                    cwd: process.cwd(),
-                    env: process.env,
-                    shell: true,
-                    stdio: 'inherit'
-                })
+            services.nginx = spawnChildProcess('nginx', [], {
+                cwd: process.cwd(),
+                env: process.env,
+                shell: true,
+                stdio: 'inherit'
+            })
             let promise:?Promise<Object> = new Promise((
                 resolve:Function, reject:Function
             ):void => {
@@ -80,7 +81,25 @@ export default class Nginx {
                 } else
                     throw error
             }
-            return {name: 'nginx', promise}
+            return {name: 'nginx', promise, reload: ():Promise<string> =>
+                new Promise((resolve:Function, reject:Function):ChildProcess =>
+                    // IgnoreTypeCheck
+                    executeChildProcess('nginx -s reload', {
+                        shell: true,
+                    }, (
+                        // IgnoreTypeCheck
+                        error:?Error, standardOutput:string,
+                        // IgnoreTypeCheck
+                        standartErrorOutput:string
+                    ):void => {
+                        if (error) {
+                            // IgnoreTypeCheck
+                            error.standartErrorOutput = standartErrorOutput
+                            reject(error)
+                        } else
+                            resolve(standardOutput)
+                    }))
+            }
         }
         return services.nginx
     }
