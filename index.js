@@ -17,14 +17,16 @@
     See http://creativecommons.org/licenses/by/3.0/deed.de
     endregion
 */
-// region  imports
-import {spawn as spawnChildProcess} from 'child_process'
+// region imports
+import {
+    ChildProcess, exec as executeChildProcess, spawn as spawnChildProcess
+} from 'child_process'
 import Tools from 'clientnode'
 // NOTE: Only needed for debugging this file.
 try {
     require('source-map-support/register')
 } catch (error) {}
-import type {Configuration, Services} from 'web-node/type'
+import type {Configuration, ServicePromises, Services} from 'web-node/type'
 // endregion
 // region plugins/classes
 /**
@@ -33,22 +35,6 @@ import type {Configuration, Services} from 'web-node/type'
  */
 export default class Nginx {
     // region api
-    /**
-     * Application will be closed soon.
-     * @param services - An object with stored service instances.
-     * @param configuration - Mutable by plugins extended configuration object.
-     * @returns Given object of services.
-     */
-    static async shouldExit(
-        services:Services, configuration:Configuration
-    ):Services {
-        if (services.nginx !== null) {
-            services.nginx.kill('SIGINT')
-            await Nginx.checkReachability(configuration.server, true)
-        }
-        delete services.nginx
-        return services
-    }
     /**
      * Start nginx's child process and return a Promise which observes this
      * service.
@@ -60,17 +46,16 @@ export default class Nginx {
      * service.
      */
     static async loadService(
-        servicePromises:{[key:string]:Promise<Object>}, services:Services,
+        servicePromises:ServicePromises, services:Services,
         configuration:Configuration
     ):Promise<?{name:string;promise:?Promise<Object>}> {
         if (!services.hasOwnProperty('nginx')) {
-            services.nginx = spawnChildProcess(
-                'nginx', [], {
-                    cwd: process.cwd(),
-                    env: process.env,
-                    shell: true,
-                    stdio: 'inherit'
-                })
+            services.nginx = spawnChildProcess('nginx', [], {
+                cwd: process.cwd(),
+                env: process.env,
+                shell: true,
+                stdio: 'inherit'
+            })
             let promise:?Promise<Object> = new Promise((
                 resolve:Function, reject:Function
             ):void => {
@@ -96,9 +81,43 @@ export default class Nginx {
                 } else
                     throw error
             }
-            return {name: 'nginx', promise}
+            return {name: 'nginx', promise, reload: ():Promise<string> =>
+                new Promise((resolve:Function, reject:Function):ChildProcess =>
+                    // IgnoreTypeCheck
+                    executeChildProcess('nginx -s reload', {
+                        shell: true,
+                    }, (
+                        // IgnoreTypeCheck
+                        error:?Error, standardOutput:string,
+                        // IgnoreTypeCheck
+                        standartErrorOutput:string
+                    ):void => {
+                        if (error) {
+                            // IgnoreTypeCheck
+                            error.standartErrorOutput = standartErrorOutput
+                            reject(error)
+                        } else
+                            resolve(standardOutput)
+                    }))
+            }
         }
         return services.nginx
+    }
+    /**
+     * Application will be closed soon.
+     * @param services - An object with stored service instances.
+     * @param configuration - Mutable by plugins extended configuration object.
+     * @returns Given object of services.
+     */
+    static async shouldExit(
+        services:Services, configuration:Configuration
+    ):Services {
+        if (services.nginx !== null) {
+            services.nginx.kill('SIGINT')
+            await Nginx.checkReachability(configuration.server, true)
+        }
+        delete services.nginx
+        return services
     }
     // endregion
     // region helper
