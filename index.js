@@ -56,6 +56,22 @@ export default class Nginx {
                 shell: true,
                 stdio: 'inherit'
             })
+            services.nginx.reload = ():Promise<string> => new Promise((
+                resolve:Function, reject:Function
+            // IgnoreTypeCheck
+            ):ChildProcess => executeChildProcess('nginx -s reload', {
+                shell: true,
+            }, (
+                // IgnoreTypeCheck
+                error:?Error, standardOutput:string, standardErrorOutput:string
+            ):void => {
+                if (error) {
+                    // IgnoreTypeCheck
+                    error.standardErrorOutput = standardErrorOutput
+                    reject(error)
+                } else
+                    resolve(standardOutput)
+            }))
             let promise:?Promise<Object> = new Promise((
                 resolve:Function, reject:Function
             ):void => {
@@ -81,25 +97,7 @@ export default class Nginx {
                 } else
                     throw error
             }
-            return {name: 'nginx', promise, reload: ():Promise<string> =>
-                new Promise((resolve:Function, reject:Function):ChildProcess =>
-                    // IgnoreTypeCheck
-                    executeChildProcess('nginx -s reload', {
-                        shell: true,
-                    }, (
-                        // IgnoreTypeCheck
-                        error:?Error, standardOutput:string,
-                        // IgnoreTypeCheck
-                        standartErrorOutput:string
-                    ):void => {
-                        if (error) {
-                            // IgnoreTypeCheck
-                            error.standartErrorOutput = standartErrorOutput
-                            reject(error)
-                        } else
-                            resolve(standardOutput)
-                    }))
-            }
+            return {name: 'nginx', promise}
         }
         return services.nginx
     }
