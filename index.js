@@ -56,6 +56,7 @@ export default class Nginx {
                 shell: true,
                 stdio: 'inherit'
             })
+            // IgnoreTypeCheck
             services.nginx.reload = ():Promise<string> => new Promise((
                 resolve:Function, reject:Function
             // IgnoreTypeCheck
