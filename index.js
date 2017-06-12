@@ -61,7 +61,7 @@ export default class Nginx {
                 resolve:Function, reject:Function
             // IgnoreTypeCheck
             ):ChildProcess => executeChildProcess('nginx -s reload', {
-                shell: true,
+                shell: true
             }, (
                 // IgnoreTypeCheck
                 error:?Error, standardOutput:string, standardErrorOutput:string
@@ -76,7 +76,6 @@ export default class Nginx {
             let promise:?Promise<Object> = new Promise((
                 resolve:Function, reject:Function
             ):void => {
-                let finished:boolean = false
                 for (const closeEventName:string of Tools.closeEventNames)
                     services.nginx.on(
                         closeEventName, Tools.getProcessCloseHandler(
