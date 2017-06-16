@@ -142,7 +142,11 @@ export default class Nginx {
             `${serverConfiguration.proxy.ports[0]}`
             return await (inverse ? Tools.checkUnreachability(
                 url, true
-            ) : Tools.checkReachability(url, true, 200, timeoutInSeconds))
+            ) : Tools.checkReachability(url, true, [
+                100, 101, 102,
+                200, 201, 202, 203, 204, 205, 206, 207, 208, 226,
+                300, 301, 302, 303, 304, 305, 306, 307, 308
+            ], timeoutInSeconds))
         }
         return {}
     }
