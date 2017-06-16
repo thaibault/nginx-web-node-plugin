@@ -61,7 +61,7 @@ export default class Nginx {
                 resolve:Function, reject:Function
             // IgnoreTypeCheck
             ):ChildProcess => executeChildProcess('nginx -s reload', {
-                shell: true,
+                shell: true
             }, (
                 // IgnoreTypeCheck
                 error:?Error, standardOutput:string, standardErrorOutput:string
@@ -76,7 +76,6 @@ export default class Nginx {
             let promise:?Promise<Object> = new Promise((
                 resolve:Function, reject:Function
             ):void => {
-                let finished:boolean = false
                 for (const closeEventName:string of Tools.closeEventNames)
                     services.nginx.on(
                         closeEventName, Tools.getProcessCloseHandler(
@@ -143,7 +142,11 @@ export default class Nginx {
             `${serverConfiguration.proxy.ports[0]}`
             return await (inverse ? Tools.checkUnreachability(
                 url, true
-            ) : Tools.checkReachability(url, true, 200, timeoutInSeconds))
+            ) : Tools.checkReachability(url, true, [
+                100, 101, 102,
+                200, 201, 202, 203, 204, 205, 206, 207, 208, 226,
+                300, 301, 302, 303, 304, 305, 306, 307, 308
+            ], timeoutInSeconds))
         }
         return {}
     }
