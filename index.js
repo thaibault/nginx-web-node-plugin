@@ -127,12 +127,22 @@ export default class Nginx {
      * or unreachability.
      * @param timeoutInSeconds - Delay after assuming given resource isn't
      * available if no response is coming.
+     * @param pollIntervallInSeconds - Seconds between two tries to reach given
+     * url.
+     * @param statusCodes - Status codes to accept an interpret as running
+     * server.
+     * @param options - Fetch options to use.
      * @returns A promise which will be resolved if a request to given url has
      * (not) finished. Otherwise returned promise will be rejected.
      */
     static async checkReachability(
         serverConfiguration:Configuration, inverse:boolean = false,
-        timeoutInSeconds:number = 3
+        timeoutInSeconds:number = 3, pollIntervallInSeconds:number = 0.1,
+        statusCodes:Array<number> = [
+            100, 101, 102,
+            200, 201, 202, 203, 204, 205, 206, 207, 208, 226,
+            300, 301, 302, 303, 304, 305, 306, 307, 308
+        ], options:PlainObject = {redirect: 'manual'}
     ):Promise<Object> {
         if (serverConfiguration.proxy.ports.length > 0) {
             const url:string = 'http' + ((
@@ -140,14 +150,12 @@ export default class Nginx {
             ) ? 's' : '') + `://` +
             `${serverConfiguration.application.hostName}:` +
             `${serverConfiguration.proxy.ports[0]}`
-            const ports:Array<number> = [
-                100, 101, 102,
-                200, 201, 202, 203, 204, 205, 206, 207, 208, 226,
-                300, 301, 302, 303, 304, 305, 306, 307, 308
-            ]
             return await (inverse ? Tools.checkUnreachability(
-                url, true, 10, 0.1, ports
-            ) : Tools.checkReachability(url, true, ports, timeoutInSeconds))
+                url, true, timeoutInSeconds, pollIntervallInSeconds,
+                statusCodes, options
+            ) : Tools.checkReachability(
+                url, true, statusCodes, timeoutInSeconds,
+                pollIntervallInSeconds, options))
         }
         return {}
     }
