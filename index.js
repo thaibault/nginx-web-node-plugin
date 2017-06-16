@@ -140,13 +140,14 @@ export default class Nginx {
             ) ? 's' : '') + `://` +
             `${serverConfiguration.application.hostName}:` +
             `${serverConfiguration.proxy.ports[0]}`
-            return await (inverse ? Tools.checkUnreachability(
-                url, true
-            ) : Tools.checkReachability(url, true, [
+            const ports:Array<number> = [
                 100, 101, 102,
                 200, 201, 202, 203, 204, 205, 206, 207, 208, 226,
                 300, 301, 302, 303, 304, 305, 306, 307, 308
-            ], timeoutInSeconds))
+            ]
+            return await (inverse ? Tools.checkUnreachability(
+                url, true, 10, 0.1, ports
+            ) : Tools.checkReachability(url, true, ports, timeoutInSeconds))
         }
         return {}
     }
