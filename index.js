@@ -21,6 +21,7 @@
 import {
     ChildProcess, exec as executeChildProcess, spawn as spawnChildProcess
 } from 'child_process'
+import type {PlainObject} from 'clientnode'
 import Tools from 'clientnode'
 // NOTE: Only needed for debugging this file.
 try {
