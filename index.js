@@ -151,12 +151,13 @@ export default class Nginx {
             ) ? 's' : '') + `://` +
             `${serverConfiguration.application.hostName}:` +
             `${serverConfiguration.proxy.ports[0]}`
-            return await (inverse ? Tools.checkUnreachability(
-                url, true, timeoutInSeconds, pollIntervallInSeconds,
-                statusCodes, options
-            ) : Tools.checkReachability(
-                url, true, statusCodes, timeoutInSeconds,
-                pollIntervallInSeconds, options))
+            return await (
+                inverse ? Tools.checkUnreachability(
+                    url, true, timeoutInSeconds, pollIntervallInSeconds,
+                    statusCodes, options
+                ) : Tools.checkReachability(
+                    url, true, statusCodes, timeoutInSeconds,
+                    pollIntervallInSeconds, options))
         }
         return {}
     }
