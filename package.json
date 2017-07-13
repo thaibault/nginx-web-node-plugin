@@ -27,7 +27,7 @@
     "clear": "webOptimizer clear",
     "document": "webOptimizer document",
     "lint": "webOptimizer check:type; webOptimizer lint",
-    "prepublish": "npm run build",
+    "prepare": "npm run build",
     "serve": "npm run build && webNode",
     "start": "npm run serve",
     "test": "webOptimizer test",
@@ -36,14 +36,26 @@
     "watch": "webOptimizer build --watch",
     "watch:dll": "webOptimizer build:dll --watch"
   },
-  "dependencies": {
-    "clientnode": "latest",
-    "serverwebnodeplugin": "latest",
-    "web-node": "latest"
+  "peerDependencies": {
+    "serverwebnodeplugin": "^1.0.48",
+    "web-node": "^1.0.111"
   },
   "devDependencies": {
-    "documentation-website": "latest",
-    "source-map-support": "latest"
+    "babel-eslint": "^7.2.3",
+    "clientnode": "^1.0.226",
+    "documentation-website": "^1.0.61",
+    "eslint": "^4.2.0",
+    "eslint-config-google": "^0.9.1",
+    "eslint-plugin-flowtype": "^2.35.0",
+    "eslint-plugin-jsdoc": "^3.1.1",
+    "flow-bin": "^0.50.0",
+    "jsdoc": "^3.5.2",
+    "serverwebnodeplugin": "^1.0.48",
+    "source-map-support": "^0.4.15",
+    "web-node": "^1.0.111",
+    "weboptimizer": "^1.0.347",
+    "webpack": "^3.2.0",
+    "webpack-dev-server": "^2.5.1"
   },
   "webNode": {
     "dependencies": [
