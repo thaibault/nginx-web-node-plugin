@@ -42,7 +42,7 @@
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",
-    "clientnode": "^1.0.226",
+    "clientnode": "^1.0.240",
     "documentation-website": "^1.0.61",
     "eslint": "^4.2.0",
     "eslint-config-google": "^0.9.1",
@@ -53,7 +53,7 @@
     "serverwebnodeplugin": "^1.0.48",
     "source-map-support": "^0.4.15",
     "web-node": "^1.0.111",
-    "weboptimizer": "^1.0.347",
+    "weboptimizer": "^1.0.368",
     "webpack": "^3.2.0",
     "webpack-dev-server": "^2.5.1"
   },
