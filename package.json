@@ -50,7 +50,7 @@
     "eslint-plugin-jsdoc": "^3.1.1",
     "flow-bin": "^0.50.0",
     "jsdoc": "^3.5.2",
-    "serverwebnodeplugin": "^1.0.48",
+    "serverwebnodeplugin": "^1.0.50",
     "source-map-support": "^0.4.15",
     "web-node": "^1.0.111",
     "weboptimizer": "^1.0.368",
