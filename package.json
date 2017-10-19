@@ -37,8 +37,8 @@
     "watch:dll": "webOptimizer build:dll --watch"
   },
   "peerDependencies": {
-    "serverwebnodeplugin": "^1.0.48",
-    "web-node": "^1.0.111"
+    "serverwebnodeplugin": "*",
+    "web-node": "*"
   },
   "devDependencies": {
     "babel-eslint": "^8.0.1",
