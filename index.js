@@ -34,7 +34,7 @@ import type {Configuration, ServicePromises, Services} from 'web-node/type'
  * Launches an application server und triggers all some pluginable hooks on
  * an event.
  */
-export default class Nginx {
+export class Nginx {
     // region api
     /**
      * Start nginx's child process and return a Promise which observes this
@@ -163,6 +163,7 @@ export default class Nginx {
     }
     // endregion
 }
+export default Nginx
 // endregion
 // region vim modline
 // vim: set tabstop=4 shiftwidth=4 expandtab:
