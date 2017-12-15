@@ -42,22 +42,22 @@
     "web-node": "*"
   },
   "devDependencies": {
-    "babel-eslint": "^8.0.2",
-    "clientnode": "^1.0.290",
-    "documentation-website": "^1.0.78",
-    "eslint": "^4.11.0",
+    "babel-eslint": "^8.0.3",
+    "clientnode": "^1.0.291",
+    "documentation-website": "^1.0.79",
+    "eslint": "^4.12.1",
     "eslint-config-google": "^0.9.1",
-    "eslint-plugin-flowtype": "^2.36.0",
+    "eslint-plugin-flowtype": "^2.40.1",
     "eslint-plugin-jsdoc": "^3.2.0",
-    "flow-bin": "^0.59.0",
+    "flow-bin": "^0.61.0",
     "jsdoc": "^3.5.2",
     "qunit": "^2.4.1",
-    "serverwebnodeplugin": "^1.0.60",
+    "serverwebnodeplugin": "^1.0.61",
     "source-map-support": "^0.5.0",
-    "web-node": "^1.0.129",
-    "weboptimizer": "^1.0.422",
-    "webpack": "^3.8.1",
-    "webpack-dev-server": "^2.9.3"
+    "web-node": "^1.0.130",
+    "weboptimizer": "^1.0.425",
+    "webpack": "^3.10.0",
+    "webpack-dev-server": "^2.9.5"
   },
   "webNode": {
     "dependencies": [
