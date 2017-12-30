@@ -9,13 +9,17 @@ License
    see http://creativecommons.org/licenses/by/3.0/deed.de
 endregion -->
 
+Project status
+--------------
+
 [![npm version](https://badge.fury.io/js/nginxwebnodeplugin.svg)](https://www.npmjs.com/package/nginxwebnodeplugin)
 [![downloads](https://img.shields.io/npm/dy/nginxwebnodeplugin.svg)](https://www.npmjs.com/package/nginxwebnodeplugin)
 [![build status](https://travis-ci.org/thaibault/nginxWebNodePlugin.svg?branch=master)](https://travis-ci.org/thaibault/nginxWebNodePlugin)
+[![code coverage](https://coveralls.io/repos/github/thaibault/nginxWebNodePlugin/badge.svg)](https://coveralls.io/github/thaibault/nginxWebNodePlugin)
 [![dependencies](https://img.shields.io/david/thaibault/nginxwebnodeplugin.svg)](https://david-dm.org/thaibault/nginxwebnodeplugin)
-[![devDependencies](https://img.shields.io/david/dev/thaibault/nginxwebnodeplugin.svg)](https://david-dm.org/thaibault/nginxwebnodeplugin?type=dev)
-[![peerDependencies](https://img.shields.io/david/peer/thaibault/nginxwebnodeplugin.svg)](https://david-dm.org/thaibault/nginxwebnodeplugin?type=peer)
-[![documentation-website](https://img.shields.io/website-up-down-green-red/http/torben.website/nginxWebNodePlugin.svg?label=documentation-website)](http://torben.website/nginxWebNodePlugin)
+[![development dependencies](https://img.shields.io/david/dev/thaibault/nginxwebnodeplugin.svg)](https://david-dm.org/thaibault/nginxwebnodeplugin?type=dev)
+[![peer dependencies](https://img.shields.io/david/peer/thaibault/nginxwebnodeplugin.svg)](https://david-dm.org/thaibault/nginxwebnodeplugin?type=peer)
+[![documentation website](https://img.shields.io/website-up-down-green-red/http/torben.website/nginxWebNodePlugin.svg?label=documentation-website)](http://torben.website/nginxWebNodePlugin)
 
 Use case
 --------
