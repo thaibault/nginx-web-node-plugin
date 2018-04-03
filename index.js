@@ -23,10 +23,6 @@ import {
 } from 'child_process'
 import type {PlainObject} from 'clientnode'
 import Tools from 'clientnode'
-// NOTE: Only needed for debugging this file.
-try {
-    require('source-map-support/register')
-} catch (error) {}
 import type {Configuration, ServicePromises, Services} from 'web-node/type'
 // endregion
 // region plugins/classes
