@@ -1,6 +1,6 @@
 {
   "name": "nginxwebnodeplugin",
-  "version": "1.0.92",
+  "version": "1.0.93",
   "license": "CC-BY-3.0",
   "description": "A nginx proxy server configuration template for webNode.",
   "homepage": "http://torben.website/nginxWebNodePlugin",
