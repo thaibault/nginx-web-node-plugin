@@ -92,7 +92,7 @@ export class Nginx {
                     services.nginx = null
                     promise = null
                 } else
-                    throw error
+                    throw Error(error)
             }
             return {name: 'nginx', promise}
         }
