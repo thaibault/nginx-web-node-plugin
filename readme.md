@@ -6,7 +6,7 @@ Copyright Torben Sickert 16.12.2012
 License
    This library written by Torben Sickert stand under a creative commons
    naming 3.0 unported license.
-   see http://creativecommons.org/licenses/by/3.0/deed.de
+   See https://creativecommons.org/licenses/by/3.0/deed.de
 endregion -->
 
 Project status
@@ -19,7 +19,7 @@ Project status
 [![dependencies](https://img.shields.io/david/thaibault/nginxwebnodeplugin.svg)](https://david-dm.org/thaibault/nginxwebnodeplugin)
 [![development dependencies](https://img.shields.io/david/dev/thaibault/nginxwebnodeplugin.svg)](https://david-dm.org/thaibault/nginxwebnodeplugin?type=dev)
 [![peer dependencies](https://img.shields.io/david/peer/thaibault/nginxwebnodeplugin.svg)](https://david-dm.org/thaibault/nginxwebnodeplugin?type=peer)
-[![documentation website](https://img.shields.io/website-up-down-green-red/http/torben.website/nginxWebNodePlugin.svg?label=documentation-website)](http://torben.website/nginxWebNodePlugin)
+[![documentation website](https://img.shields.io/website-up-down-green-red/https/torben.website/nginxWebNodePlugin.svg?label=documentation-website)](https://torben.website/nginxWebNodePlugin)
 
 Use case
 --------
