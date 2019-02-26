@@ -16,10 +16,6 @@
 */
 // region imports
 import registerTest from 'clientnode/test'
-// NOTE: Only needed for debugging this file.
-try {
-    module.require('source-map-support/register')
-} catch (error) {}
 import baseConfiguration from 'web-node/configurator'
 import WebNodePluginAPI from 'web-node/pluginAPI'
 import type {Configuration, Services} from 'web-node/type'
