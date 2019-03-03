@@ -16,19 +16,19 @@
 */
 // region imports
 import registerTest from 'clientnode/test'
-import baseConfiguration from 'web-node/configurator'
-import WebNodePluginAPI from 'web-node/pluginAPI'
+import {configuration as baseConfiguration, PluginAPI} from 'web-node'
 import type {Configuration, Services} from 'web-node/type'
 
 import Index from './index'
 // endregion
 registerTest(async function():Promise<void> {
-    const configuration:Configuration = (await WebNodePluginAPI.loadAll(
+    const configuration:Configuration = (await PluginAPI.loadAll(
         baseConfiguration
     )).configuration
     // region tests
     // / region api
     this.test('loadService', async (assert:Object):Promise<void> => {
+        const done:Function = assert.async()
         try {
             assert.strictEqual(
                 await Index.loadService({}, {nginx: null}, configuration), null
@@ -36,8 +36,10 @@ registerTest(async function():Promise<void> {
         } catch (error) {
             console.error(error)
         }
+        done()
     })
     this.test('shouldExit', async (assert:Object):Promise<void> => {
+        const done:Function = assert.async()
         let testValue:boolean = false
         const services:Services = {nginx: {kill: ():void => {
             testValue = true
@@ -50,6 +52,7 @@ registerTest(async function():Promise<void> {
         }
         assert.deepEqual(services, {})
         assert.ok(testValue)
+        done()
     })
     // / endregion
     // / region helper
@@ -57,6 +60,7 @@ registerTest(async function():Promise<void> {
         const done:Function = assert.async()
         try {
             await Index.checkReachability(configuration.server, false, 0.2)
+            assert.ok(true)
         } catch (error) {
             assert.ok(true)
         }

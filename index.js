@@ -43,7 +43,8 @@ export class Nginx {
      * service.
      */
     static async loadService(
-        servicePromises:ServicePromises, services:Services,
+        servicePromises:ServicePromises,
+        services:Services,
         configuration:Configuration
     ):Promise<?{name:string;promise:?Promise<Object>}> {
         if (!services.hasOwnProperty('nginx')) {
@@ -76,11 +77,13 @@ export class Nginx {
                 for (const closeEventName:string of Tools.closeEventNames)
                     services.nginx.on(
                         closeEventName, Tools.getProcessCloseHandler(
-                            resolve, (
-                                configuration.server.proxy.optional
-                            ) ? resolve : reject, {
-                                reason: services.nginx, process: services.nginx
-                            }))
+                            resolve,
+                            (configuration.server.proxy.optional) ?
+                                resolve :
+                                reject,
+                            {reason: services.nginx, process: services.nginx}
+                        )
+                    )
             })
             try {
                 await Nginx.checkReachability(configuration.server)
@@ -133,13 +136,16 @@ export class Nginx {
      * (not) finished. Otherwise returned promise will be rejected.
      */
     static async checkReachability(
-        serverConfiguration:Configuration, inverse:boolean = false,
-        timeoutInSeconds:number = 3, pollIntervallInSeconds:number = 0.1,
+        serverConfiguration:Configuration,
+        inverse:boolean = false,
+        timeoutInSeconds:number = 3,
+        pollIntervallInSeconds:number = 0.1,
         statusCodes:Array<number> = [
             100, 101, 102,
             200, 201, 202, 203, 204, 205, 206, 207, 208, 226,
             300, 301, 302, 303, 304, 305, 306, 307, 308
-        ], options:PlainObject = {redirect: 'manual'}
+        ],
+        options:PlainObject = {redirect: 'manual'}
     ):Promise<Object> {
         if (serverConfiguration.proxy.ports.length > 0) {
             const url:string = 'http' + ((
@@ -148,12 +154,24 @@ export class Nginx {
             `${serverConfiguration.application.hostName}:` +
             `${serverConfiguration.proxy.ports[0]}`
             return await (
-                inverse ? Tools.checkUnreachability(
-                    url, true, timeoutInSeconds, pollIntervallInSeconds,
-                    statusCodes, options
-                ) : Tools.checkReachability(
-                    url, true, statusCodes, timeoutInSeconds,
-                    pollIntervallInSeconds, options))
+                inverse ?
+                    Tools.checkUnreachability(
+                        url,
+                        true,
+                        timeoutInSeconds,
+                        pollIntervallInSeconds,
+                        statusCodes,
+                        options
+                    ) :
+                    Tools.checkReachability(
+                        url,
+                        true,
+                        statusCodes,
+                        timeoutInSeconds,
+                        pollIntervallInSeconds,
+                        options
+                    )
+            )
         }
         return {}
     }
