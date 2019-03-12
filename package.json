@@ -81,6 +81,7 @@
       }
     }
   },
+  "sideEffects": false,
   "webOptimizer": {
     "targetTechnology": "node"
   }
