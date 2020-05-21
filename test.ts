@@ -1,4 +1,3 @@
-// @flow
 // #!/usr/bin/env node
 // -*- coding: utf-8 -*-
 'use strict'
@@ -15,66 +14,57 @@
     endregion
 */
 // region imports
-import registerTest from 'clientnode/test'
 import {configuration as baseConfiguration, PluginAPI} from 'web-node'
-import type {Configuration, Services} from 'web-node/type'
+import {Configuration, Services} from 'web-node/type'
 
 import Index from './index'
 // endregion
-registerTest(async function():Promise<void> {
+describe('nginx', async ():Promise<void> => {
     const configuration:Configuration = (await PluginAPI.loadAll(
         baseConfiguration
     )).configuration
     // region tests
     // / region api
-    this.test('loadService', async (assert:Object):Promise<void> => {
-        const done:Function = assert.async()
+    test('loadService', async ():Promise<void> => {
         try {
-            assert.strictEqual(
-                await Index.loadService({}, {nginx: null}, configuration), null
-            )
+            expect(await Index.loadService({}, {nginx: null}, configuration))
+                .toStrictEqual(null)
         } catch (error) {
             console.error(error)
         }
-        done()
     })
-    this.test('shouldExit', async (assert:Object):Promise<void> => {
-        const done:Function = assert.async()
+    test('shouldExit', async ():Promise<void> => {
         let testValue:boolean = false
         const services:Services = {nginx: {kill: ():void => {
             testValue = true
         }}}
         try {
-            assert.deepEqual(
-                await Index.shouldExit(services, configuration), services)
+            expect(await Index.shouldExit(services, configuration))
+                .toStrictEqual(services)
         } catch (error) {
             console.error(error)
         }
         assert.deepEqual(services, {})
         assert.ok(testValue)
-        done()
     })
     // / endregion
+    // TODO
     // / region helper
-    this.test('checkReachability', async (assert:Object):Promise<void> => {
-        const done:Function = assert.async()
+    test('checkReachability', async ():Promise<void> => {
         try {
             await Index.checkReachability(configuration.server, false, 0.2)
-            assert.ok(true)
-        } catch (error) {
-            assert.ok(true)
-        }
+        } catch (error) {}
+        assert.ok(true)
         try {
             await Index.checkReachability(configuration.server, true, 0.2)
             assert.ok(true)
         } catch (error) {
             console.error(error)
         }
-        done()
     })
     // / endregion
     // endregion
-}, 'plain')
+})
 // region vim modline
 // vim: set tabstop=4 shiftwidth=4 expandtab:
 // vim: foldmethod=marker foldmarker=region,endregion:
