@@ -16,7 +16,10 @@
     "configuration",
     "template"
   ],
-  "main": "index.compiled.js",
+  "files": [
+    "index.ts"
+  ],
+  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/thaibault/nginxWebNodePlugin.git"

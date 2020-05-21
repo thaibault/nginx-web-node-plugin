@@ -1,4 +1,3 @@
-// @flow
 // #!/usr/bin/env node
 // -*- coding: utf-8 -*-
 /** @module nginxWebNodePlugin */
@@ -21,9 +20,9 @@
 import {
     ChildProcess, exec as executeChildProcess, spawn as spawnChildProcess
 } from 'child_process'
-import type {PlainObject} from 'clientnode'
 import Tools from 'clientnode'
-import type {Configuration, ServicePromises, Services} from 'web-node/type'
+import {PlainObject} from 'clientnode/type'
+import {Configuration, ServicePromises, Services} from 'web-node/type'
 // endregion
 // region plugins/classes
 /**
@@ -148,11 +147,11 @@ export class Nginx {
         options:PlainObject = {redirect: 'manual'}
     ):Promise<Object> {
         if (serverConfiguration.proxy.ports.length > 0) {
-            const url:string = 'http' + ((
-                serverConfiguration.proxy.ports[0] === 443
-            ) ? 's' : '') + `://` +
-            `${serverConfiguration.application.hostName}:` +
-            `${serverConfiguration.proxy.ports[0]}`
+            const url:string =
+                'http' +
+                (serverConfiguration.proxy.ports[0] === 443 ? 's' : '') +
+                `://${serverConfiguration.application.hostName}:` +
+                `${serverConfiguration.proxy.ports[0]}`
             return await (
                 inverse ?
                     Tools.checkUnreachability(
