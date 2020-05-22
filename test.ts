@@ -28,7 +28,7 @@ describe('nginx', async ():Promise<void> => {
     test('loadService', async ():Promise<void> => {
         try {
             expect(await Index.loadService({}, {nginx: null}, configuration))
-                .toStrictEqual(null)
+                .toBeNull()
         } catch (error) {
             console.error(error)
         }
@@ -44,20 +44,19 @@ describe('nginx', async ():Promise<void> => {
         } catch (error) {
             console.error(error)
         }
-        assert.deepEqual(services, {})
-        assert.ok(testValue)
+        expect(services).toStrictEqual({})
+        expect(testValue).toStrictEqual(true)
     })
     // / endregion
-    // TODO
     // / region helper
     test('checkReachability', async ():Promise<void> => {
         try {
             await Index.checkReachability(configuration.server, false, 0.2)
         } catch (error) {}
-        assert.ok(true)
+        expect(true).toStrictEqual(true)
         try {
             await Index.checkReachability(configuration.server, true, 0.2)
-            assert.ok(true)
+            expect(true).toStrictEqual(true)
         } catch (error) {
             console.error(error)
         }
