@@ -45,7 +45,7 @@ export class Nginx {
         servicePromises:ServicePromises,
         services:Services,
         configuration:Configuration
-    ):Promise<?{name:string;promise:?Promise<Object>}> {
+    ):Promise<{name:string;promise:Promise<object>}> {
         if (!services.hasOwnProperty('nginx')) {
             services.nginx = spawnChildProcess('nginx', [], {
                 cwd: process.cwd(),
@@ -53,31 +53,35 @@ export class Nginx {
                 shell: true,
                 stdio: 'inherit'
             })
-            // IgnoreTypeCheck
-            services.nginx.reload = ():Promise<string> => new Promise((
-                resolve:Function, reject:Function
-            // IgnoreTypeCheck
-            ):ChildProcess => executeChildProcess('nginx -s reload', {
-                shell: true
-            }, (
-                // IgnoreTypeCheck
-                error:?Error, standardOutput:string, standardErrorOutput:string
-            ):void => {
-                if (error) {
-                    // IgnoreTypeCheck
-                    error.standardErrorOutput = standardErrorOutput
-                    reject(error)
-                } else
-                    resolve(standardOutput)
-            }))
-            let promise:?Promise<Object> = new Promise((
+            services.nginx.reload = ():Promise<string> =>
+                new Promise((
+                    resolve:Function, reject:Function
+                ):ChildProcess =>
+                    executeChildProcess(
+                        'nginx -s reload',
+                        {shell: true},
+                        (
+                            error:Error|undefined,
+                            standardOutput:string,
+                            standardErrorOutput:string
+                        ):void => {
+                            if (error) {
+                                error.standardErrorOutput = standardErrorOutput
+                                reject(error)
+                            } else
+                                resolve(standardOutput)
+                        }
+                    )
+                )
+            let promise:Promise<object> = new Promise((
                 resolve:Function, reject:Function
             ):void => {
                 for (const closeEventName:string of Tools.closeEventNames)
                     services.nginx.on(
-                        closeEventName, Tools.getProcessCloseHandler(
+                        closeEventName,
+                        Tools.getProcessCloseHandler(
                             resolve,
-                            (configuration.server.proxy.optional) ?
+                            configuration.server.proxy.optional ?
                                 resolve :
                                 reject,
                             {reason: services.nginx, process: services.nginx}
@@ -145,7 +149,7 @@ export class Nginx {
             300, 301, 302, 303, 304, 305, 306, 307, 308
         ],
         options:PlainObject = {redirect: 'manual'}
-    ):Promise<Object> {
+    ):Promise<object> {
         if (serverConfiguration.proxy.ports.length > 0) {
             const url:string =
                 'http' +
