@@ -86,6 +86,13 @@
   },
   "sideEffects": false,
   "webOptimizer": {
+    "commandLine": {
+      "test": {
+        "environments": [
+          "node"
+        ]
+      }
+    },
     "targetTechnology": "node"
   }
 }
