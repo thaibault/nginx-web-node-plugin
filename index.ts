@@ -22,7 +22,9 @@ import {
 } from 'child_process'
 import Tools from 'clientnode'
 import {PlainObject} from 'clientnode/type'
-import {Configuration, ServicePromises, Services} from 'web-node/type'
+import {
+    Configuration, NginxService, NginxServicePromises, NginxServices
+} from 'web-node/type'
 // endregion
 // region plugins/classes
 /**
@@ -42,10 +44,10 @@ export class Nginx {
      * service.
      */
     static async loadService(
-        servicePromises:ServicePromises,
-        services:Services,
+        servicePromises:NginxServicePromises,
+        services:NginxServices,
         configuration:Configuration
-    ):Promise<{name:string;promise:Promise<object>}> {
+    ):Promise<NginxService> {
         if (!services.hasOwnProperty('nginx')) {
             services.nginx = spawnChildProcess('nginx', [], {
                 cwd: process.cwd(),
