@@ -14,30 +14,41 @@
     endregion
 */
 // region imports
+import Tools from 'clientnode'
 import {configuration as baseConfiguration, PluginAPI} from 'web-node'
 
-import {Configuration, Services} from './type'
+import {Configuration, ServiceProcess, Services, ServicePromises} from './type'
 import Index from './index'
 // endregion
-describe('nginx', async ():Promise<void> => {
-    const configuration:Configuration = (await PluginAPI.loadAll(
-        baseConfiguration
-    )).configuration
+describe('nginx', ():void => {
+    let configuration:Configuration
+    beforeAll(async ():Promise<void> => {
+        configuration = Tools.extend(
+            (await PluginAPI.loadAll(baseConfiguration)) as
+                unknown as
+                Configuration,
+            {server: {proxy: {ports: []}}}
+        )
+    })
     // region tests
     // / region api
     test('loadService', async ():Promise<void> => {
         try {
-            expect(await Index.loadService({}, {nginx: null}, configuration))
-                .toBeNull()
+            expect(await Index.loadService(
+                {} as ServicePromises,
+                {nginx: null} as Services,
+                configuration
+            )).toBeNull()
         } catch (error) {
             console.error(error)
         }
     })
     test('shouldExit', async ():Promise<void> => {
         let testValue:boolean = false
-        const services:Services = {nginx: {kill: ():void => {
+        const services:Services = {nginx: {kill: ():boolean => {
             testValue = true
-        }}}
+            return true
+        }} as ServiceProcess} as Services
         try {
             expect(await Index.shouldExit(services, configuration))
                 .toStrictEqual(services)

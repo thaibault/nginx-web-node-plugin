@@ -52,9 +52,9 @@ export class Nginx implements PluginHandler {
         servicePromises:ServicePromises,
         services:Services,
         configuration:Configuration
-    ):Promise<Service> {
+    ):Promise<null|Service> {
         if (services.hasOwnProperty('nginx'))
-            return services.nginx
+            return null
         services.nginx = spawnChildProcess(
             'nginx',
             [],
@@ -123,7 +123,7 @@ export class Nginx implements PluginHandler {
      */
     static async shouldExit(
         services:Services, configuration:Configuration
-    ):Services {
+    ):Promise<Services> {
         if (services.nginx !== null) {
             services.nginx.kill('SIGINT')
             await Nginx.checkReachability(configuration.server, true)
@@ -149,7 +149,7 @@ export class Nginx implements PluginHandler {
      * @returns A promise which will be resolved if a request to given url has
      * (not) finished. Otherwise returned promise will be rejected.
      */
-    static async checkReachability(
+    static checkReachability(
         serverConfiguration:Configuration['server'],
         inverse:boolean = false,
         timeoutInSeconds:number = 3,
@@ -167,27 +167,25 @@ export class Nginx implements PluginHandler {
                 (serverConfiguration.proxy.ports[0] === 443 ? 's' : '') +
                 `://${serverConfiguration.application.hostName}:` +
                 `${serverConfiguration.proxy.ports[0]}`
-            return await (
-                inverse ?
-                    Tools.checkUnreachability(
-                        url,
-                        true,
-                        timeoutInSeconds,
-                        pollIntervallInSeconds,
-                        statusCodes,
-                        options
-                    ) :
-                    Tools.checkReachability(
-                        url,
-                        true,
-                        statusCodes,
-                        timeoutInSeconds,
-                        pollIntervallInSeconds,
-                        options
-                    )
-            )
+            return inverse ?
+                Tools.checkUnreachability(
+                    url,
+                    true,
+                    timeoutInSeconds,
+                    pollIntervallInSeconds,
+                    statusCodes,
+                    options
+                ) :
+                Tools.checkReachability(
+                    url,
+                    true,
+                    statusCodes,
+                    timeoutInSeconds,
+                    pollIntervallInSeconds,
+                    options
+                )
         }
-        return {}
+        return Promise.resolve({})
     }
     // endregion
 }

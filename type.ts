@@ -42,7 +42,7 @@ export type Service = BaseService & {
 }
 export type ServiceProcess = ChildProcess & {reload:() => Promise<string>}
 export type Services = BaseServices & {
-    nginx:ServiceProcess|null;
+    nginx:null|ServiceProcess;
 }
 export type ServicePromises = BaseServicePromises & {
     nginx:Promise<ProcessCloseReason>;
