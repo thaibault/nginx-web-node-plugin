@@ -15,8 +15,8 @@
 */
 // region imports
 import {configuration as baseConfiguration, PluginAPI} from 'web-node'
-import {Configuration, Services} from 'web-node/type'
 
+import {Configuration, Services} from './type'
 import Index from './index'
 // endregion
 describe('nginx', async ():Promise<void> => {

@@ -16,18 +16,35 @@
 // region imports
 import {ChildProcess} from 'child_process'
 import {ProcessCloseReason} from 'clientnode/type'
-import {Service} from 'web-node/type'
+import {Service as BaseService} from 'web-node/type'
 import {
-    ServerPluginHandler, ServerServices, ServerServicePromises
+    Configuration as BaseConfiguration,
+    Services as BaseServices,
+    ServicePromises as BaseServicePromises
 } from 'serverwebnodeplugin/type'
 // endregion
 // region exports
-export type NginxService = Service & {
-    name:'nginx';
-    promise:Promise<ProcessCloseReason>;
+export type Configuration = BaseConfiguration & {
+    server:{
+        proxy:{
+            optional:boolean;
+            logFilePath:{
+                access:string;
+                error:string;
+            };
+            ports:Array<number>;
+        };
+    };
 }
-export type NginxServices = ServerServices & {nginx:ChildProcess}
-export type ServerServicePromises = ServerServicePromises & {
+export type Service = BaseService & {
+    name:'nginx';
+    promise:null|Promise<ProcessCloseReason>;
+}
+export type ServiceProcess = ChildProcess & {reload:() => Promise<string>}
+export type Services = BaseServices & {
+    nginx:ServiceProcess|null;
+}
+export type ServicePromises = BaseServicePromises & {
     nginx:Promise<ProcessCloseReason>;
 }
 // endregion

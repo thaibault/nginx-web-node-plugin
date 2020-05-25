@@ -18,20 +18,25 @@
 */
 // region imports
 import {
-    ChildProcess, exec as executeChildProcess, spawn as spawnChildProcess
+    ChildProcess,
+    exec as executeChildProcess,
+    ExecException,
+    spawn as spawnChildProcess
 } from 'child_process'
-import Tools from 'clientnode'
-import {PlainObject} from 'clientnode/type'
+import Tools, {CloseEventNames} from 'clientnode'
+import {PlainObject, ProcessCloseReason, ProcessError} from 'clientnode/type'
+import {PluginHandler} from 'web-node/type'
+
 import {
-    Configuration, NginxService, NginxServicePromises, NginxServices
-} from 'web-node/type'
+    Configuration, Service, ServiceProcess, ServicePromises, Services
+} from './type'
 // endregion
 // region plugins/classes
 /**
  * Launches an application server und triggers all some pluginable hooks on
  * an event.
  */
-export class Nginx {
+export class Nginx implements PluginHandler {
     // region api
     /**
      * Start nginx's child process and return a Promise which observes this
@@ -44,67 +49,71 @@ export class Nginx {
      * service.
      */
     static async loadService(
-        servicePromises:NginxServicePromises,
-        services:NginxServices,
+        servicePromises:ServicePromises,
+        services:Services,
         configuration:Configuration
-    ):Promise<NginxService> {
-        if (!services.hasOwnProperty('nginx')) {
-            services.nginx = spawnChildProcess('nginx', [], {
+    ):Promise<Service> {
+        if (services.hasOwnProperty('nginx'))
+            return services.nginx
+        services.nginx = spawnChildProcess(
+            'nginx',
+            [],
+            {
                 cwd: process.cwd(),
                 env: process.env,
                 shell: true,
                 stdio: 'inherit'
-            })
-            services.nginx.reload = ():Promise<string> =>
-                new Promise((
-                    resolve:Function, reject:Function
-                ):ChildProcess =>
-                    executeChildProcess(
-                        'nginx -s reload',
-                        {shell: true},
-                        (
-                            error:Error|undefined,
-                            standardOutput:string,
-                            standardErrorOutput:string
-                        ):void => {
-                            if (error) {
-                                error.standardErrorOutput = standardErrorOutput
-                                reject(error)
-                            } else
-                                resolve(standardOutput)
-                        }
-                    )
+            }
+        ) as ServiceProcess
+        services.nginx.reload = ():Promise<string> =>
+            new Promise((resolve:Function, reject:Function):ChildProcess =>
+                executeChildProcess(
+                    'nginx -s reload',
+                    (
+                        error:ExecException|null,
+                        standardOutput:string,
+                        standardErrorOutput:string
+                    ):void => {
+                        if (error) {
+                            (error as ExecException & {
+                                standardErrorOutput:string;
+                            }).standardErrorOutput = standardErrorOutput
+                            reject(error)
+                        } else
+                            resolve(standardOutput)
+                    }
                 )
-            let promise:Promise<object> = new Promise((
-                resolve:Function, reject:Function
-            ):void => {
-                for (const closeEventName:string of Tools.closeEventNames)
-                    services.nginx.on(
-                        closeEventName,
-                        Tools.getProcessCloseHandler(
-                            resolve,
+            )
+        let promise:null|Promise<ProcessCloseReason> = new Promise((
+            resolve:Function, reject:Function
+        ):void => {
+            for (const closeEventName of CloseEventNames)
+                (services.nginx as ServiceProcess).on(
+                    closeEventName,
+                    Tools.getProcessCloseHandler(
+                        resolve as (item:ProcessCloseReason) => void,
+                        (
                             configuration.server.proxy.optional ?
                                 resolve :
-                                reject,
-                            {reason: services.nginx, process: services.nginx}
-                        )
+                                reject
+                        ) as (error:ProcessError) => void,
+                        {reason: services.nginx, process: services.nginx}
                     )
-            })
-            try {
-                await Nginx.checkReachability(configuration.server)
-            } catch (error) {
-                if (configuration.server.proxy.optional) {
-                    console.warn(
-                        `Nginx couldn't be started but was marked as optional.`
-                    )
-                    services.nginx = null
-                    promise = null
-                } else
-                    throw error
-            }
-            return {name: 'nginx', promise}
+                )
+        })
+        try {
+            await Nginx.checkReachability(configuration.server)
+        } catch (error) {
+            if (configuration.server.proxy.optional) {
+                console.warn(
+                    `Nginx couldn't be started but was marked as optional.`
+                )
+                services.nginx = null
+                promise = null
+            } else
+                throw error
         }
-        return services.nginx
+        return {name: 'nginx', promise}
     }
     /**
      * Application will be closed soon.
@@ -141,7 +150,7 @@ export class Nginx {
      * (not) finished. Otherwise returned promise will be rejected.
      */
     static async checkReachability(
-        serverConfiguration:Configuration,
+        serverConfiguration:Configuration['server'],
         inverse:boolean = false,
         timeoutInSeconds:number = 3,
         pollIntervallInSeconds:number = 0.1,
