@@ -18,18 +18,25 @@
 */
 // region imports
 import {
-    ChildProcess, exec as executeChildProcess, spawn as spawnChildProcess
+    ChildProcess,
+    exec as executeChildProcess,
+    ExecException,
+    spawn as spawnChildProcess
 } from 'child_process'
-import Tools from 'clientnode'
-import {PlainObject} from 'clientnode/type'
-import {Configuration, ServicePromises, Services} from 'web-node/type'
+import Tools, {CloseEventNames} from 'clientnode'
+import {PlainObject, ProcessCloseReason, ProcessError} from 'clientnode/type'
+import {PluginHandler} from 'web-node/type'
+
+import {
+    Configuration, Service, ServiceProcess, ServicePromises, Services
+} from './type'
 // endregion
 // region plugins/classes
 /**
  * Launches an application server und triggers all some pluginable hooks on
  * an event.
  */
-export class Nginx {
+export class Nginx implements PluginHandler {
     // region api
     /**
      * Start nginx's child process and return a Promise which observes this
@@ -45,60 +52,68 @@ export class Nginx {
         servicePromises:ServicePromises,
         services:Services,
         configuration:Configuration
-    ):Promise<?{name:string;promise:?Promise<Object>}> {
-        if (!services.hasOwnProperty('nginx')) {
-            services.nginx = spawnChildProcess('nginx', [], {
+    ):Promise<null|Service> {
+        if (services.hasOwnProperty('nginx'))
+            return null
+        services.nginx = spawnChildProcess(
+            'nginx',
+            [],
+            {
                 cwd: process.cwd(),
                 env: process.env,
                 shell: true,
                 stdio: 'inherit'
-            })
-            // IgnoreTypeCheck
-            services.nginx.reload = ():Promise<string> => new Promise((
-                resolve:Function, reject:Function
-            // IgnoreTypeCheck
-            ):ChildProcess => executeChildProcess('nginx -s reload', {
-                shell: true
-            }, (
-                // IgnoreTypeCheck
-                error:?Error, standardOutput:string, standardErrorOutput:string
-            ):void => {
-                if (error) {
-                    // IgnoreTypeCheck
-                    error.standardErrorOutput = standardErrorOutput
-                    reject(error)
-                } else
-                    resolve(standardOutput)
-            }))
-            let promise:?Promise<Object> = new Promise((
-                resolve:Function, reject:Function
-            ):void => {
-                for (const closeEventName:string of Tools.closeEventNames)
-                    services.nginx.on(
-                        closeEventName, Tools.getProcessCloseHandler(
-                            resolve,
-                            (configuration.server.proxy.optional) ?
-                                resolve :
-                                reject,
-                            {reason: services.nginx, process: services.nginx}
-                        )
-                    )
-            })
-            try {
-                await Nginx.checkReachability(configuration.server)
-            } catch (error) {
-                if (configuration.server.proxy.optional) {
-                    console.warn(
-                        `Nginx couldn't be started but was marked as optional.`
-                    )
-                    services.nginx = null
-                    promise = null
-                } else
-                    throw error
             }
-            return {name: 'nginx', promise}
+        ) as ServiceProcess
+        services.nginx.reload = ():Promise<string> =>
+            new Promise((resolve:Function, reject:Function):ChildProcess =>
+                executeChildProcess(
+                    'nginx -s reload',
+                    (
+                        error:ExecException|null,
+                        standardOutput:string,
+                        standardErrorOutput:string
+                    ):void => {
+                        if (error) {
+                            (error as ExecException & {
+                                standardErrorOutput:string;
+                            }).standardErrorOutput = standardErrorOutput
+                            reject(error)
+                        } else
+                            resolve(standardOutput)
+                    }
+                )
+            )
+        let promise:null|Promise<ProcessCloseReason> = new Promise((
+            resolve:Function, reject:Function
+        ):void => {
+            for (const closeEventName of CloseEventNames)
+                (services.nginx as ServiceProcess).on(
+                    closeEventName,
+                    Tools.getProcessCloseHandler(
+                        resolve as (item:ProcessCloseReason) => void,
+                        (
+                            configuration.server.proxy.optional ?
+                                resolve :
+                                reject
+                        ) as (error:ProcessError) => void,
+                        {reason: services.nginx, process: services.nginx}
+                    )
+                )
+        })
+        try {
+            await Nginx.checkReachability(configuration.server)
+        } catch (error) {
+            if (configuration.server.proxy.optional) {
+                console.warn(
+                    `Nginx couldn't be started but was marked as optional.`
+                )
+                services.nginx = null
+                promise = null
+            } else
+                throw error
         }
-        return services.nginx
+        return {name: 'nginx', promise}
     }
     /**
      * Application will be closed soon.
@@ -108,7 +123,7 @@ export class Nginx {
      */
     static async shouldExit(
         services:Services, configuration:Configuration
-    ):Services {
+    ):Promise<Services> {
         if (services.nginx !== null) {
             services.nginx.kill('SIGINT')
             await Nginx.checkReachability(configuration.server, true)
@@ -134,8 +149,8 @@ export class Nginx {
      * @returns A promise which will be resolved if a request to given url has
      * (not) finished. Otherwise returned promise will be rejected.
      */
-    static async checkReachability(
-        serverConfiguration:Configuration,
+    static checkReachability(
+        serverConfiguration:Configuration['server'],
         inverse:boolean = false,
         timeoutInSeconds:number = 3,
         pollIntervallInSeconds:number = 0.1,
@@ -145,34 +160,32 @@ export class Nginx {
             300, 301, 302, 303, 304, 305, 306, 307, 308
         ],
         options:PlainObject = {redirect: 'manual'}
-    ):Promise<Object> {
+    ):Promise<object> {
         if (serverConfiguration.proxy.ports.length > 0) {
             const url:string =
                 'http' +
                 (serverConfiguration.proxy.ports[0] === 443 ? 's' : '') +
                 `://${serverConfiguration.application.hostName}:` +
                 `${serverConfiguration.proxy.ports[0]}`
-            return await (
-                inverse ?
-                    Tools.checkUnreachability(
-                        url,
-                        true,
-                        timeoutInSeconds,
-                        pollIntervallInSeconds,
-                        statusCodes,
-                        options
-                    ) :
-                    Tools.checkReachability(
-                        url,
-                        true,
-                        statusCodes,
-                        timeoutInSeconds,
-                        pollIntervallInSeconds,
-                        options
-                    )
-            )
+            return inverse ?
+                Tools.checkUnreachability(
+                    url,
+                    true,
+                    timeoutInSeconds,
+                    pollIntervallInSeconds,
+                    statusCodes,
+                    options
+                ) :
+                Tools.checkReachability(
+                    url,
+                    true,
+                    statusCodes,
+                    timeoutInSeconds,
+                    pollIntervallInSeconds,
+                    options
+                )
         }
-        return {}
+        return Promise.resolve({})
     }
     // endregion
 }
