@@ -1,6 +1,6 @@
 {
   "name": "nginxwebnodeplugin",
-  "version": "1.0.176",
+  "version": "1.0.177",
   "license": "CC-BY-3.0",
   "description": "A nginx proxy server configuration template for webNode.",
   "homepage": "https://torben.website/nginxWebNodePlugin",
@@ -66,7 +66,7 @@
     "serverwebnodeplugin": "*",
     "web-node": "*"
   },
-  "sideEffects": true,
+  "sideEffects": false,
   "webNode": {
     "dependencies": [
       "server"
@@ -85,7 +85,6 @@
       }
     }
   },
-  "sideEffects": false,
   "webOptimizer": {
     "commandLine": {
       "test": {
