@@ -21,6 +21,7 @@ import {Configuration, ServiceProcess, Services, ServicePromises} from './type'
 import Index from './index'
 // endregion
 describe('nginx', ():void => {
+    // region mockup
     let configuration:Configuration
     beforeAll(async ():Promise<void> => {
         configuration = Tools.extend(
@@ -30,6 +31,7 @@ describe('nginx', ():void => {
             {server: {proxy: {ports: []}}}
         )
     })
+    // endregion
     // region tests
     // / region api
     test('loadService', async ():Promise<void> => {

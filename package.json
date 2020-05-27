@@ -40,11 +40,6 @@
     "update:documentation": "documentationWebsite --log-level info",
     "watch": "webOptimizer build --watch"
   },
-  "peerDependencies": {
-    "@babel/runtime": "*",
-    "serverwebnodeplugin": "*",
-    "web-node": "*"
-  },
   "devDependencies": {
     "@types/jest": "*",
     "@types/loader-utils": "*",
@@ -66,6 +61,12 @@
     "webpack-cli": "*",
     "webpack-dev-server": "*"
   },
+  "peerDependencies": {
+    "@babel/runtime": "*",
+    "serverwebnodeplugin": "*",
+    "web-node": "*"
+  },
+  "sideEffects": true,
   "webNode": {
     "dependencies": [
       "server"
