@@ -24,7 +24,12 @@ import {
     spawn as spawnChildProcess
 } from 'child_process'
 import Tools, {CloseEventNames} from 'clientnode'
-import {PlainObject, ProcessCloseReason, ProcessError} from 'clientnode/type'
+import {
+    ProcessCloseCallback, ProcessCloseReason, ProcessErrorCallback
+} from 'clientnode/type'
+import {
+    Response as FetchResponse, RequestInit as FetchOptions
+} from 'node-fetch'
 import {PluginHandler} from 'web-node/type'
 
 import {
@@ -91,12 +96,12 @@ export class Nginx implements PluginHandler {
                 (services.nginx as ServiceProcess).on(
                     closeEventName,
                     Tools.getProcessCloseHandler(
-                        resolve as (item:ProcessCloseReason) => void,
+                        resolve as ProcessCloseCallback,
                         (
                             configuration.server.proxy.optional ?
                                 resolve :
                                 reject
-                        ) as (error:ProcessError) => void,
+                        ) as ProcessErrorCallback,
                         {reason: services.nginx, process: services.nginx}
                     )
                 )
@@ -159,8 +164,8 @@ export class Nginx implements PluginHandler {
             200, 201, 202, 203, 204, 205, 206, 207, 208, 226,
             300, 301, 302, 303, 304, 305, 306, 307, 308
         ],
-        options:PlainObject = {redirect: 'manual'}
-    ):Promise<object> {
+        options:FetchOptions = {redirect: 'manual'}
+    ):Promise<FetchResponse> {
         if (serverConfiguration.proxy.ports.length > 0) {
             const url:string =
                 'http' +
