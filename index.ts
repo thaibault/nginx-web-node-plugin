@@ -165,7 +165,7 @@ export class Nginx implements PluginHandler {
             300, 301, 302, 303, 304, 305, 306, 307, 308
         ],
         options:FetchOptions = {redirect: 'manual'}
-    ):Promise<FetchResponse> {
+    ):Promise<FetchResponse|Error|null|Promise<Error|null>> {
         if (serverConfiguration.proxy.ports.length > 0) {
             const url:string =
                 'http' +
@@ -190,7 +190,7 @@ export class Nginx implements PluginHandler {
                     options
                 )
         }
-        return Promise.resolve({})
+        return Promise.resolve(null)
     }
     // endregion
 }
