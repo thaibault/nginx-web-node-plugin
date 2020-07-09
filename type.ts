@@ -21,11 +21,11 @@ import {
     Configuration as BaseConfiguration,
     Services as BaseServices,
     ServicePromises as BaseServicePromises
-} from 'serverwebnodeplugin/type'
+} from 'application-server-web-node-plugin/type'
 // endregion
 // region exports
 export type Configuration = BaseConfiguration & {
-    server:{
+    applicationServer:{
         proxy:{
             optional:boolean;
             logFilePath:{

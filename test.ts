@@ -28,7 +28,7 @@ describe('nginx', ():void => {
             (await PluginAPI.loadAll(baseConfiguration)) as
                 unknown as
                 Configuration,
-            {server: {proxy: {ports: []}}}
+            {applicationServer: {proxy: {ports: []}}}
         )
     })
     // endregion
@@ -64,11 +64,15 @@ describe('nginx', ():void => {
     // / region helper
     test('checkReachability', async ():Promise<void> => {
         try {
-            await Index.checkReachability(configuration.server, false, 0.2)
+            await Index.checkReachability(
+                configuration.applicationServer, false, 0.2
+            )
         } catch (error) {}
         expect(true).toStrictEqual(true)
         try {
-            await Index.checkReachability(configuration.server, true, 0.2)
+            await Index.checkReachability(
+                configuration.applicationServer, true, 0.2
+            )
             expect(true).toStrictEqual(true)
         } catch (error) {
             console.error(error)

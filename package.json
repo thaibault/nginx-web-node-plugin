@@ -55,7 +55,7 @@
     "eslint-plugin-jsdoc": "*",
     "jest": "*",
     "jsdoc": "*",
-    "serverwebnodeplugin": "*",
+    "application-server-web-node-plugin": "*",
     "web-node": "*",
     "weboptimizer": "*",
     "webpack": "*",
@@ -64,7 +64,7 @@
   },
   "peerDependencies": {
     "@babel/runtime": "*",
-    "serverwebnodeplugin": "*",
+    "application-server-web-node-plugin": "*",
     "web-node": "*"
   },
   "sideEffects": false,
