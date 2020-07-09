@@ -3,9 +3,9 @@
   "version": "1.0.185",
   "license": "CC-BY-3.0",
   "description": "A nginx proxy server configuration template for webNode.",
-  "homepage": "https://torben.website/nginxWebNodePlugin",
+  "homepage": "https://torben.website/nginx-web-node-plugin",
   "documentationWebsite": {
-    "name": "nginxWebNodePlugin",
+    "name": "nginx-web-node-plugin",
     "trackingCode": "UA-40192634-23"
   },
   "keywords": [
@@ -22,23 +22,23 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/thaibault/nginxWebNodePlugin.git"
+    "url": "https://github.com/thaibault/nginx-web-node-plugin.git"
   },
   "scripts": {
-    "build": "webOptimizer build",
+    "build": "weboptimizer build",
     "check": "yarn check:types; yarn lint",
-    "check:types": "webOptimizer check:types",
-    "clear": "webOptimizer clear",
-    "document": "webOptimizer document",
-    "lint": "webOptimizer lint",
+    "check:types": "weboptimizer check:types",
+    "clear": "weboptimizer clear",
+    "document": "weboptimizer document",
+    "lint": "weboptimizer lint",
     "prepare": "yarn build",
     "report:coverage": "nyc report --reporter=text-lcov | coveralls",
     "serve": "yarn build && webNode",
     "start": "yarn serve",
-    "test": "webOptimizer test",
+    "test": "weboptimizer test",
     "update": "yarn version --patch && yarn publish",
     "update:documentation": "documentationWebsite --log-level info",
-    "watch": "webOptimizer build --watch"
+    "watch": "weboptimizer build --watch"
   },
   "devDependencies": {
     "@types/jest": "*",
@@ -70,9 +70,9 @@
   "sideEffects": false,
   "webNode": {
     "dependencies": [
-      "server"
+      "application-server"
     ],
-    "server": {
+    "applicationServer": {
       "proxy": {
         "optional": true,
         "logFilePath": {
