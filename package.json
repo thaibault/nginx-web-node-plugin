@@ -1,6 +1,6 @@
 {
   "name": "nginxwebnodeplugin",
-  "version": "1.0.185",
+  "version": "1.0.186",
   "license": "CC-BY-3.0",
   "description": "A nginx proxy server configuration template for webNode.",
   "homepage": "https://torben.website/nginx-web-node-plugin",
@@ -47,6 +47,7 @@
     "@types/node-fetch": "*",
     "@typescript-eslint/eslint-plugin": "*",
     "@typescript-eslint/parser": "*",
+    "application-server-web-node-plugin": "*",
     "babel-eslint": "*",
     "clientnode": "*",
     "documentation-website": "*",
@@ -55,7 +56,6 @@
     "eslint-plugin-jsdoc": "*",
     "jest": "*",
     "jsdoc": "*",
-    "application-server-web-node-plugin": "*",
     "web-node": "*",
     "weboptimizer": "*",
     "webpack": "*",
