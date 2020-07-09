@@ -1,10 +1,10 @@
 // #!/usr/bin/env node
 // -*- coding: utf-8 -*-
-/** @module nginxWebNodePlugin */
+/** @module nginx-web-node-plugin */
 'use strict'
 /* !
     region header
-    [Project page](https://torben.website/nginxWebNodePlugin)
+    [Project page](https://torben.website/nginx-web-node-plugin)
 
     Copyright Torben Sickert (info["~at~"]torben.website) 16.12.2012
 
@@ -98,7 +98,7 @@ export class Nginx implements PluginHandler {
                     Tools.getProcessCloseHandler(
                         resolve as ProcessCloseCallback,
                         (
-                            configuration.server.proxy.optional ?
+                            configuration.applicationServer.proxy.optional ?
                                 resolve :
                                 reject
                         ) as ProcessErrorCallback,
@@ -107,9 +107,9 @@ export class Nginx implements PluginHandler {
                 )
         })
         try {
-            await Nginx.checkReachability(configuration.server)
+            await Nginx.checkReachability(configuration.applicationServer)
         } catch (error) {
-            if (configuration.server.proxy.optional) {
+            if (configuration.applicationServer.proxy.optional) {
                 console.warn(
                     `Nginx couldn't be started but was marked as optional.`
                 )
@@ -131,7 +131,9 @@ export class Nginx implements PluginHandler {
     ):Promise<Services> {
         if (services.nginx !== null) {
             services.nginx.kill('SIGINT')
-            await Nginx.checkReachability(configuration.server, true)
+            await Nginx.checkReachability(
+                configuration.applicationServer, true
+            )
         }
         delete services.nginx
         return services
@@ -155,7 +157,7 @@ export class Nginx implements PluginHandler {
      * (not) finished. Otherwise returned promise will be rejected.
      */
     static checkReachability(
-        serverConfiguration:Configuration['server'],
+        serverConfiguration:Configuration['applicationServer'],
         inverse:boolean = false,
         timeoutInSeconds:number = 3,
         pollIntervallInSeconds:number = 0.1,
@@ -170,7 +172,7 @@ export class Nginx implements PluginHandler {
             const url:string =
                 'http' +
                 (serverConfiguration.proxy.ports[0] === 443 ? 's' : '') +
-                `://${serverConfiguration.application.hostName}:` +
+                `://${serverConfiguration.hostName}:` +
                 `${serverConfiguration.proxy.ports[0]}`
             return inverse ?
                 Tools.checkUnreachability(
