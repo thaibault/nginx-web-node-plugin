@@ -27,25 +27,25 @@ import {
 export type Configuration = BaseConfiguration & {
     applicationServer:{
         proxy:{
-            optional:boolean;
+            optional:boolean
             logFilePath:{
-                access:string;
-                error:string;
-            };
-            ports:Array<number>;
-        };
-    };
+                access:string
+                error:string
+            }
+            ports:Array<number>
+        }
+    }
 }
 export type Service = BaseService & {
-    name:'nginx';
-    promise:null|Promise<ProcessCloseReason>;
+    name:'nginx'
+    promise:null|Promise<ProcessCloseReason>
 }
 export type ServiceProcess = ChildProcess & {reload:() => Promise<string>}
 export type Services = BaseServices & {
-    nginx:null|ServiceProcess;
+    nginx:null|ServiceProcess
 }
 export type ServicePromises = BaseServicePromises & {
-    nginx:Promise<ProcessCloseReason>;
+    nginx:Promise<ProcessCloseReason>
 }
 // endregion
 // region vim modline

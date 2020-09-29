@@ -81,7 +81,7 @@ export class Nginx implements PluginHandler {
                     ):void => {
                         if (error) {
                             (error as ExecException & {
-                                standardErrorOutput:string;
+                                standardErrorOutput:string
                             }).standardErrorOutput = standardErrorOutput
                             reject(error)
                         } else
@@ -135,7 +135,7 @@ export class Nginx implements PluginHandler {
                 configuration.applicationServer, true
             )
         }
-        delete services.nginx
+        delete (services as {nginx?:Services['nginx']}).nginx
         return services
     }
     // endregion
