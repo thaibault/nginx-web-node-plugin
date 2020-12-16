@@ -57,9 +57,7 @@
     "jest": "*",
     "jsdoc": "*",
     "web-node": "*",
-    "weboptimizer": "*",
-    "webpack": "*",
-    "webpack-cli": "*"
+    "weboptimizer": "*"
   },
   "peerDependencies": {
     "@babel/runtime": "*",
