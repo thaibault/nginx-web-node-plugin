@@ -25,9 +25,7 @@ describe('nginx', ():void => {
     let configuration:Configuration
     beforeAll(async ():Promise<void> => {
         configuration = Tools.extend(
-            (await PluginAPI.loadAll(baseConfiguration)) as
-                unknown as
-                Configuration,
+            (await PluginAPI.loadAll(baseConfiguration)).configuration,
             {applicationServer: {proxy: {ports: []}}}
         )
     })
