@@ -24,10 +24,12 @@ describe('nginx', ():void => {
     // region mockup
     let configuration:Configuration
     beforeAll(async ():Promise<void> => {
-        configuration = Tools.extend(
-            (await PluginAPI.loadAll(baseConfiguration)).configuration,
-            {applicationServer: {proxy: {ports: []}}}
-        )
+        configuration = {
+            ...Tools.copy(
+                (await PluginAPI.loadAll(baseConfiguration)).configuration
+            ),
+            applicationServer: {proxy: {ports: []}}
+        } as unknown as Configuration
     })
     // endregion
     // region tests
