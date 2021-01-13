@@ -68,9 +68,6 @@
   },
   "sideEffects": false,
   "webNode": {
-    "dependencies": [
-      "application-server"
-    ],
     "applicationServer": {
       "proxy": {
         "optional": true,
@@ -83,7 +80,10 @@
           443
         ]
       }
-    }
+    },
+    "dependencies": [
+      "application-server"
+    ]
   },
   "webOptimizer": {
     "commandLine": {
@@ -92,6 +92,9 @@
           "node"
         ]
       }
+    },
+    "module": {
+      "enforceDeduplication": true
     },
     "targetTechnology": "node"
   }
