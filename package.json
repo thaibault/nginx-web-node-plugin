@@ -42,6 +42,7 @@
     "watch": "weboptimizer build --watch"
   },
   "devDependencies": {
+    "@babel/eslint-parser": "*",
     "@types/jest": "*",
     "@types/loader-utils": "*",
     "@types/node": "*",
@@ -50,7 +51,6 @@
     "@typescript-eslint/eslint-plugin": "*",
     "@typescript-eslint/parser": "*",
     "application-server-web-node-plugin": "*",
-    "babel-eslint": "*",
     "clientnode": "*",
     "documentation-website": "*",
     "eslint": "*",
