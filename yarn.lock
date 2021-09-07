@@ -1705,9 +1705,9 @@ anymatch@^3.0.3:
     picomatch "^2.0.4"
 
 application-server-web-node-plugin@*:
-  version "1.0.267"
-  resolved "https://registry.yarnpkg.com/application-server-web-node-plugin/-/application-server-web-node-plugin-1.0.267.tgz#4fc7779a66a96e7f59b94275e2c1a12fea6aa9d2"
-  integrity sha512-ayjecCnnsWIU8/MaA+2m5mxwA5SqMOwLWfEZUrxRmeVFdV356dYd+KGedYB19Uouoi2dDjU7LvBAZAPe85Hugg==
+  version "1.0.268"
+  resolved "https://registry.yarnpkg.com/application-server-web-node-plugin/-/application-server-web-node-plugin-1.0.268.tgz#b1bcd9e3fe93852be700c6fac79c170e78fba161"
+  integrity sha512-CYnPATldAwKrZ0LovMWzjSrBnRFMGUk9KezvE2QSriYFabwEAB/hCM04KBJOWCgkafDG7FEZKd8t37m5cqkk0A==
   dependencies:
     "@types/webpack" "https://registry.yarnpkg.com/@favware/skip-dependency/-/skip-dependency-1.1.1.tgz"
 
@@ -6013,9 +6013,9 @@ watchpack@^2.2.0:
     graceful-fs "^4.1.2"
 
 web-node@*:
-  version "1.0.397"
-  resolved "https://registry.yarnpkg.com/web-node/-/web-node-1.0.397.tgz#457b7e378b34f47a60a6a12ac60f0401373270ad"
-  integrity sha512-zLgJEnsiADeL9Dh6QNRxLNd+qxTU3tJBGxmaEc9RTtjkUTgw9PhzKXZJedVl2MYuHH1SzgbxL4Vp4wynIzPfYg==
+  version "1.0.398"
+  resolved "https://registry.yarnpkg.com/web-node/-/web-node-1.0.398.tgz#6927a5b2b6704d3e74c5efc9e57b0298d7b85a86"
+  integrity sha512-MgyFkRblX2UuNOaebdnwds6s+Vx0eplESp3cJ8VH1P3jeb+zJPBd0McMBmT/n4a/fJIv0ozgSTqfW2oVJYV3+g==
   dependencies:
     "@types/webpack" "https://registry.yarnpkg.com/@favware/skip-dependency/-/skip-dependency-1.1.1.tgz"
 
