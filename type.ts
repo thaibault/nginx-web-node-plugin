@@ -24,7 +24,7 @@ import {
 } from 'application-server-web-node-plugin/type'
 // endregion
 // region exports
-export type Configuration = BaseConfiguration & {
+export interface Configuration extends BaseConfiguration {
     applicationServer:{
         proxy:{
             optional:boolean
@@ -36,15 +36,17 @@ export type Configuration = BaseConfiguration & {
         }
     }
 }
-export type Service = BaseService & {
+export interface Service extends BaseService {
     name:'nginx'
     promise:null|Promise<ProcessCloseReason>
 }
-export type ServiceProcess = ChildProcess & {reload:() => Promise<string>}
-export type Services = BaseServices & {
+export interface ServiceProcess extends ChildProcess {
+    reload:():Promise<string>
+}
+export interface Services extends BaseServices {
     nginx:null|ServiceProcess
 }
-export type ServicePromises = BaseServicePromises & {
+export interface ServicePromises extends BaseServicePromises {
     nginx:Promise<ProcessCloseReason>
 }
 // endregion
