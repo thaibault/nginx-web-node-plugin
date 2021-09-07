@@ -17,10 +17,10 @@
     "template"
   ],
   "files": [
-    "index.ts",
-    "type.ts"
+    "index.d.ts",
+    "index.js",
+    "type.d.ts"
   ],
-  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/thaibault/nginx-web-node-plugin.git"
@@ -42,15 +42,13 @@
     "watch": "weboptimizer build --watch"
   },
   "devDependencies": {
+    "@babel/eslint-parser": "*",
     "@types/jest": "*",
-    "@types/loader-utils": "*",
     "@types/node": "*",
-    "@types/node-fetch": "*",
     "@types/workbox-webpack-plugin": "*",
     "@typescript-eslint/eslint-plugin": "*",
     "@typescript-eslint/parser": "*",
     "application-server-web-node-plugin": "*",
-    "babel-eslint": "*",
     "clientnode": "*",
     "documentation-website": "*",
     "eslint": "*",
@@ -58,6 +56,7 @@
     "eslint-plugin-jsdoc": "*",
     "jest": "*",
     "jsdoc": "*",
+    "node-fetch": "*",
     "web-node": "*",
     "weboptimizer": "*"
   },
@@ -67,7 +66,7 @@
     "web-node": "*"
   },
   "resolutions": {
-    "@types/webpack": "https://registry.yarnpkg.com/@favware/skip-dependency/-/skip-dependency-1.1.0.tgz"
+    "@types/webpack": "https://registry.yarnpkg.com/@favware/skip-dependency/-/skip-dependency-1.1.1.tgz"
   },
   "sideEffects": false,
   "webNode": {
@@ -102,6 +101,6 @@
     "targetTechnology": "node"
   },
   "dependencies": {
-    "@types/webpack": "https://registry.yarnpkg.com/@favware/skip-dependency/-/skip-dependency-1.1.0.tgz"
+    "@types/webpack": "https://registry.yarnpkg.com/@favware/skip-dependency/-/skip-dependency-1.1.1.tgz"
   }
 }
