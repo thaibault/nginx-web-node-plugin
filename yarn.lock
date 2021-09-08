@@ -1705,9 +1705,9 @@ anymatch@^3.0.3:
     picomatch "^2.0.4"
 
 application-server-web-node-plugin@*:
-  version "1.0.270"
-  resolved "https://registry.yarnpkg.com/application-server-web-node-plugin/-/application-server-web-node-plugin-1.0.270.tgz#da9f42ab10ca305ddf2879cfb10c450f5f73cd7a"
-  integrity sha512-J7syg5sXmVugHDFMcBHd7KUKj1THRWYjr0i23EM0hHe0LWPALtaYXw0+R4Alt5ujismjaMz7Z9RwvT4A5ZYHlA==
+  version "1.0.271"
+  resolved "https://registry.yarnpkg.com/application-server-web-node-plugin/-/application-server-web-node-plugin-1.0.271.tgz#9c86eda4ab3fce26a05df94006f1b1f30901e711"
+  integrity sha512-Kp8n8WK8II6bqB7rfaq+o9xD9Rh5fzvcZ699QPSP8VTlWEaSAn7iQv80t3dWmJV+hjDbEdJUyhpoOCj3lAcQXg==
   dependencies:
     "@types/webpack" "https://registry.yarnpkg.com/@favware/skip-dependency/-/skip-dependency-1.1.1.tgz"
 
@@ -6013,9 +6013,9 @@ watchpack@^2.2.0:
     graceful-fs "^4.1.2"
 
 web-node@*:
-  version "1.0.401"
-  resolved "https://registry.yarnpkg.com/web-node/-/web-node-1.0.401.tgz#acd7c8c4e056557b68e212a6c8d26e1be6269e7a"
-  integrity sha512-rtk1BL3jl48jf1jzVj8yDAafx9nvLBa+tdZnx9MrZVCEmJIHu+6rmUPHoB0/hVudVVgnmau0Muo0gMZizg57BA==
+  version "1.0.403"
+  resolved "https://registry.yarnpkg.com/web-node/-/web-node-1.0.403.tgz#6ca4eb31abd1092ada16a115bc49b0930b495afc"
+  integrity sha512-C4R22qVYomY6R6B/o5WhPeQINoII87zNKDenlhsj3S/1fuLDhZRFtJ64fYYH3w7Imcp4nwWbPoxcC9KV/vrl6Q==
   dependencies:
     "@types/webpack" "https://registry.yarnpkg.com/@favware/skip-dependency/-/skip-dependency-1.1.1.tgz"
 
@@ -6213,9 +6213,9 @@ write-file-atomic@^3.0.0:
     typedarray-to-buffer "^3.1.5"
 
 ws@^7.4.6:
-  version "7.5.4"
-  resolved "https://registry.yarnpkg.com/ws/-/ws-7.5.4.tgz#56bfa20b167427e138a7795de68d134fe92e21f9"
-  integrity sha512-zP9z6GXm6zC27YtspwH99T3qTG7bBFv2VIkeHstMLrLlDJuzA7tQ5ls3OJ1hOGGCzTQPniNJoHXIAOS0Jljohg==
+  version "7.5.5"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-7.5.5.tgz#8b4bc4af518cfabd0473ae4f99144287b33eb881"
+  integrity sha512-BAkMFcAzl8as1G/hArkxOxq3G7pjUqQ3gzYbLL0/5zNkph70e+lCoxBGnm6AW1+/aiNeV4fnKqZ8m4GZewmH2w==
 
 xml-name-validator@^3.0.0:
   version "3.0.0"

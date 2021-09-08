@@ -24,18 +24,20 @@ import {
 } from 'application-server-web-node-plugin/type'
 // endregion
 // region exports
-export type Configuration = BaseConfiguration<{
-    applicationServer:{
-        proxy:{
-            optional:boolean
-            logFilePath:{
-                access:string
-                error:string
+export type Configuration<PluginConfigurationType = {}> =
+    BaseConfiguration<{
+        applicationServer:{
+            proxy:{
+                optional:boolean
+                logFilePath:{
+                    access:string
+                    error:string
+                }
+                ports:Array<number>
             }
-            ports:Array<number>
         }
-    }
-}>
+    }> &
+    PluginConfigurationType
 
 export interface Service extends BaseService {
     name:'nginx'
@@ -44,12 +46,11 @@ export interface Service extends BaseService {
 export interface ServiceProcess extends ChildProcess {
     reload():Promise<string>
 }
-export interface Services extends BaseServices {
-    nginx:null|ServiceProcess
-}
-export interface ServicePromises extends BaseServicePromises {
-    nginx:Promise<ProcessCloseReason>
-}
+export type Services<ServiceType = {}> =
+    BaseServices<{nginx:null|ServiceProcess}> & ServiceType
+export type ServicePromises<ServicePromiseType = {}> =
+    BaseServicePromises<{nginx:Promise<ProcessCloseReason>}> &
+    ServicePromiseType
 // endregion
 // region vim modline
 // vim: set tabstop=4 shiftwidth=4 expandtab:
