@@ -174,22 +174,27 @@ export class Nginx implements PluginHandler {
                 (serverConfiguration.proxy.ports[0] === 443 ? 's' : '') +
                 `://${serverConfiguration.hostName}:` +
                 `${serverConfiguration.proxy.ports[0]}`
+
             return inverse ?
                 Tools.checkUnreachability(
                     url,
-                    true,
-                    timeoutInSeconds,
-                    pollIntervallInSeconds,
-                    statusCodes,
-                    options
+                    {
+                        options,
+                        pollIntervallInSeconds,
+                        statusCodes,
+                        timeoutInSeconds,
+                        wait: true
+                    }
                 ) :
                 Tools.checkReachability(
                     url,
-                    true,
-                    statusCodes,
-                    timeoutInSeconds,
-                    pollIntervallInSeconds,
-                    options
+                    {
+                        options,
+                        pollIntervallInSeconds,
+                        statusCodes,
+                        timeoutInSeconds,
+                        wait: true
+                    }
                 )
         }
         return Promise.resolve(null)
