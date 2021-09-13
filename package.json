@@ -1,6 +1,6 @@
 {
   "name": "nginxwebnodeplugin",
-  "version": "1.0.229",
+  "version": "1.0.230",
   "license": "CC-BY-3.0",
   "description": "A nginx proxy server configuration template for webNode.",
   "homepage": "https://torben.website/nginx-web-node-plugin",
@@ -102,7 +102,7 @@
       }
     },
     "module": {
-       "aliases": {
+      "aliases": {
         "#": "Standard import is \"node-fetch/lib/index.mjs\" which has import declarations which aren't allowed for javascript module files.",
         "node-fetch$": "pouchdb/node_modules/node-fetch/lib/index.js"
       },
