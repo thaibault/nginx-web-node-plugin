@@ -46,11 +46,11 @@ export interface Service extends BaseService {
 export interface ServiceProcess extends ChildProcess {
     reload():Promise<string>
 }
-export type Services<ServiceType = {}> =
-    BaseServices<{nginx:null|ServiceProcess}> & ServiceType
 export type ServicePromises<ServicePromiseType = {}> =
     BaseServicePromises<{nginx:Promise<ProcessCloseReason>}> &
     ServicePromiseType
+export type Services<ServiceType = {}> =
+    BaseServices<{nginx:null|ServiceProcess}> & ServiceType
 // endregion
 // region vim modline
 // vim: set tabstop=4 shiftwidth=4 expandtab:

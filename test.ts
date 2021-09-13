@@ -65,13 +65,13 @@ describe('nginx', ():void => {
     test('checkReachability', async ():Promise<void> => {
         try {
             await Index.checkReachability(
-                configuration.applicationServer, false, 0.2
+                configuration.applicationServer, false, {timeoutInSeconds: .2}
             )
         } catch (error) {}
         expect(true).toStrictEqual(true)
         try {
             await Index.checkReachability(
-                configuration.applicationServer, true, 0.2
+                configuration.applicationServer, true, {timeoutInSeconds: .2}
             )
             expect(true).toStrictEqual(true)
         } catch (error) {
