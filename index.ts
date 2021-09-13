@@ -25,11 +25,12 @@ import {
 } from 'child_process'
 import Tools, {CloseEventNames} from 'clientnode'
 import {
-    ProcessCloseCallback, ProcessCloseReason, ProcessErrorCallback
+    CheckReachabilityOptions,
+    ProcessCloseCallback,
+    ProcessCloseReason,
+    ProcessErrorCallback,
+    RecursivePartial
 } from 'clientnode/type'
-import {
-    Response as FetchResponse, RequestInit as FetchOptions
-} from 'node-fetch'
 import {PluginHandler} from 'web-node/type'
 
 import {
@@ -142,32 +143,22 @@ export class Nginx implements PluginHandler {
     // region helper
     /**
      * Check if a nginx server is currently (not) running.
+     *
      * @param serverConfiguration - Mutable by plugins extended configuration
      * object.
      * @param inverse - Boolean indicating if we should check for reachability
-     * or unreachability.
-     * @param timeoutInSeconds - Delay after assuming given resource isn't
-     * available if no response is coming.
-     * @param pollIntervallInSeconds - Seconds between two tries to reach given
-     * url.
-     * @param statusCodes - Status codes to accept an interpret as running
-     * server.
-     * @param options - Fetch options to use.
+     * or un-reachability.
+     * @param givenOptions - Tools reachability options to configure how to
+     * check for reachability.
+     *
      * @returns A promise which will be resolved if a request to given url has
      * (not) finished. Otherwise returned promise will be rejected.
      */
     static checkReachability(
         serverConfiguration:Configuration['applicationServer'],
         inverse:boolean = false,
-        timeoutInSeconds:number = 3,
-        pollIntervallInSeconds:number = 0.1,
-        statusCodes:Array<number> = [
-            100, 101, 102,
-            200, 201, 202, 203, 204, 205, 206, 207, 208, 226,
-            300, 301, 302, 303, 304, 305, 306, 307, 308
-        ],
-        options:FetchOptions = {redirect: 'manual'}
-    ):Promise<FetchResponse|Error|null|Promise<Error|null>> {
+        givenOptions:RecursivePartial<CheckReachabilityOptions> = {}
+    ):Promise<Response|Error|null|Promise<Error|null>> {
         if (serverConfiguration.proxy.ports.length > 0) {
             const url:string =
                 'http' +
@@ -175,28 +166,24 @@ export class Nginx implements PluginHandler {
                 `://${serverConfiguration.hostName}:` +
                 `${serverConfiguration.proxy.ports[0]}`
 
+            const options:RecursivePartial<CheckReachabilityOptions> = {
+                options: {redirect: 'manual'},
+                pollIntervallInSeconds: .1,
+                statusCodes: [
+                    100, 101, 102,
+                    200, 201, 202, 203, 204, 205, 206, 207, 208, 226,
+                    300, 301, 302, 303, 304, 305, 306, 307, 308
+                ],
+                timeoutInSeconds: 3,
+                wait: true,
+                ...givenOptions
+            }
+
             return inverse ?
-                Tools.checkUnreachability(
-                    url,
-                    {
-                        options,
-                        pollIntervallInSeconds,
-                        statusCodes,
-                        timeoutInSeconds,
-                        wait: true
-                    }
-                ) :
-                Tools.checkReachability(
-                    url,
-                    {
-                        options,
-                        pollIntervallInSeconds,
-                        statusCodes,
-                        timeoutInSeconds,
-                        wait: true
-                    }
-                )
+                Tools.checkUnreachability(url, options) :
+                Tools.checkReachability(url, options)
         }
+
         return Promise.resolve(null)
     }
     // endregion
