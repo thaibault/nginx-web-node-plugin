@@ -46,17 +46,20 @@ describe('nginx', ():void => {
         }
     })
     test('shouldExit', async ():Promise<void> => {
-        let testValue:boolean = false
+        let testValue = false
         const services:Services = {nginx: {kill: ():boolean => {
             testValue = true
+
             return true
         }} as ServiceProcess} as Services
+
         try {
             expect(await Index.shouldExit(services, configuration))
                 .toStrictEqual(services)
         } catch (error) {
             console.error(error)
         }
+
         expect(services).toStrictEqual({})
         expect(testValue).toStrictEqual(true)
     })
@@ -67,8 +70,12 @@ describe('nginx', ():void => {
             await Index.checkReachability(
                 configuration.applicationServer, false, {timeoutInSeconds: .2}
             )
-        } catch (error) {}
+        } catch (error) {
+            // Ignore error.
+        }
+
         expect(true).toStrictEqual(true)
+
         try {
             await Index.checkReachability(
                 configuration.applicationServer, true, {timeoutInSeconds: .2}
