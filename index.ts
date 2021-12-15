@@ -51,6 +51,7 @@ export class Nginx implements PluginHandler {
      * instances.
      * @param services - An object with stored service instances.
      * @param configuration - Mutable by plugins extended configuration object.
+     *
      * @returns A promise which correspond to the plugin specific continues
      * service.
      */
@@ -59,8 +60,9 @@ export class Nginx implements PluginHandler {
         services:Services,
         configuration:Configuration
     ):Promise<null|Service> {
-        if (services.hasOwnProperty('nginx'))
+        if (Object.prototype.hasOwnProperty.call(services, 'nginx'))
             return null
+
         services.nginx = spawnChildProcess(
             'nginx',
             [],
@@ -71,6 +73,7 @@ export class Nginx implements PluginHandler {
                 stdio: 'inherit'
             }
         ) as ServiceProcess
+
         services.nginx.reload = ():Promise<string> =>
             new Promise((resolve:Function, reject:Function):ChildProcess =>
                 executeChildProcess(
@@ -90,6 +93,7 @@ export class Nginx implements PluginHandler {
                     }
                 )
             )
+
         let promise:null|Promise<ProcessCloseReason> = new Promise((
             resolve:Function, reject:Function
         ):void => {
@@ -107,6 +111,7 @@ export class Nginx implements PluginHandler {
                     )
                 )
         })
+
         try {
             await Nginx.checkReachability(configuration.applicationServer)
         } catch (error) {
@@ -119,12 +124,14 @@ export class Nginx implements PluginHandler {
             } else
                 throw error
         }
+
         return {name: 'nginx', promise}
     }
     /**
      * Application will be closed soon.
      * @param services - An object with stored service instances.
      * @param configuration - Mutable by plugins extended configuration object.
+     *
      * @returns Given object of services.
      */
     static async shouldExit(
@@ -136,14 +143,15 @@ export class Nginx implements PluginHandler {
                 configuration.applicationServer, true
             )
         }
+
         delete (services as {nginx?:Services['nginx']}).nginx
+
         return services
     }
     // endregion
     // region helper
     /**
      * Check if a nginx server is currently (not) running.
-     *
      * @param serverConfiguration - Mutable by plugins extended configuration
      * object.
      * @param inverse - Boolean indicating if we should check for reachability
@@ -156,7 +164,7 @@ export class Nginx implements PluginHandler {
      */
     static checkReachability(
         serverConfiguration:Configuration['applicationServer'],
-        inverse:boolean = false,
+        inverse = false,
         givenOptions:RecursivePartial<CheckReachabilityOptions> = {}
     ):Promise<Response|Error|null|Promise<Error|null>> {
         if (serverConfiguration.proxy.ports.length > 0) {
