@@ -16,12 +16,12 @@
 // region imports
 import {ChildProcess} from 'child_process'
 import {ProcessCloseReason} from 'clientnode/type'
-import {Service as BaseService} from 'web-node/type'
 import {
     Configuration as BaseConfiguration,
     Services as BaseServices,
     ServicePromises as BaseServicePromises
 } from 'application-server-web-node-plugin/type'
+import {Service as BaseService} from 'web-node/type'
 // endregion
 // region exports
 export type Configuration<PluginConfigurationType = {}> =
