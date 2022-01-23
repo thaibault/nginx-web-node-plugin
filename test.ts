@@ -27,7 +27,7 @@ describe('nginx', ():void => {
         configuration = {
             ...(await PluginAPI.loadAll(Tools.copy(baseConfiguration)))
                 .configuration,
-            applicationServer: {proxy: {ports: []}}
+            applicationServer: {proxy: {ports: {backend: {}}}}
         } as unknown as Configuration
     })
     // endregion

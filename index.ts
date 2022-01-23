@@ -167,12 +167,16 @@ export class Nginx implements PluginHandler {
         inverse = false,
         givenOptions:RecursivePartial<CheckReachabilityOptions> = {}
     ):Promise<Response|Error|null|Promise<Error|null>> {
-        if (serverConfiguration.proxy.ports.length > 0) {
+        if (
+            Object.values(serverConfiguration.proxy.ports.backend).length > 0
+        ) {
             const url:string =
                 'http' +
-                (serverConfiguration.proxy.ports[0] === 443 ? 's' : '') +
+                (Object.values(serverConfiguration.proxy.ports.backend)[0] ===
+                    443 ? 's' : ''
+                ) +
                 `://${serverConfiguration.hostName}:` +
-                `${serverConfiguration.proxy.ports[0]}`
+                `${Object.values(serverConfiguration.proxy.ports.backend)[0]}`
 
             const options:RecursivePartial<CheckReachabilityOptions> = {
                 options: {redirect: 'manual'},
@@ -187,9 +191,9 @@ export class Nginx implements PluginHandler {
                 ...givenOptions
             }
 
-            return inverse ?
-                Tools.checkUnreachability(url, options) :
-                Tools.checkReachability(url, options)
+            return (
+                inverse ? Tools.checkUnreachability : Tools.checkReachability
+            )(url, options)
         }
 
         return Promise.resolve(null)
