@@ -15,7 +15,7 @@
 */
 // region imports
 import {ChildProcess} from 'child_process'
-import {ProcessCloseReason} from 'clientnode/type'
+import {Mapping, ProcessCloseReason} from 'clientnode/type'
 import {
     Configuration as BaseConfiguration,
     Services as BaseServices,
@@ -33,7 +33,7 @@ export type Configuration<PluginConfigurationType = {}> =
                     access:string
                     error:string
                 }
-                ports:Array<number>
+                ports:{backend:Mapping<number>}
             }
         }
     }> &
