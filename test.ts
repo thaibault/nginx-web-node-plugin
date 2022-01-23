@@ -25,9 +25,8 @@ describe('nginx', ():void => {
     let configuration:Configuration
     beforeAll(async ():Promise<void> => {
         configuration = {
-            ...Tools.copy(
-                (await PluginAPI.loadAll(baseConfiguration)).configuration
-            ),
+            ...(await PluginAPI.loadAll(Tools.copy(baseConfiguration)))
+                .configuration,
             applicationServer: {proxy: {ports: []}}
         } as unknown as Configuration
     })
