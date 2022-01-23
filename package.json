@@ -78,6 +78,9 @@
   "sideEffects": false,
   "webNode": {
     "applicationServer": {
+      "dependencies": [
+        "application-server"
+      ],
       "proxy": {
         "optional": true,
         "logFilePath": {
@@ -89,10 +92,7 @@
           443
         ]
       }
-    },
-    "dependencies": [
-      "application-server"
-    ]
+    }
   },
   "webOptimizer": {
     "commandLine": {
