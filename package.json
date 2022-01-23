@@ -87,10 +87,12 @@
           "access": "/dev/stdout",
           "error": "/dev/stderr"
         },
-        "ports": [
-          80,
-          443
-        ]
+        "ports": {
+          "backend": {
+            "encrypted": 443,
+            "plain": 80
+          }
+        }
       }
     }
   },
