@@ -78,9 +78,6 @@
   "sideEffects": false,
   "webNode": {
     "applicationServer": {
-      "dependencies": [
-        "application-server"
-      ],
       "proxy": {
         "optional": true,
         "logFilePath": {
@@ -94,6 +91,11 @@
           }
         }
       }
+    },
+    "nginx": {
+      "dependencies": [
+        "applicationServer"
+      ]
     }
   },
   "webOptimizer": {
