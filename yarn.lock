@@ -1754,9 +1754,9 @@ anymatch@^3.0.3:
     picomatch "^2.0.4"
 
 application-server-web-node-plugin@*:
-  version "1.0.288"
-  resolved "https://registry.yarnpkg.com/application-server-web-node-plugin/-/application-server-web-node-plugin-1.0.288.tgz#42fef1c8ca9e7fdcc891d7ef8a3a8b0f11f73c72"
-  integrity sha512-a8xT5cCtkdQegDLVJpNNGu3rY3uqCnmZNCfPvcO3Bf2xMEbTrs0Vk7tx8AYURdNU5TprzoKmsIy6UxoMswVdNA==
+  version "1.0.289"
+  resolved "https://registry.yarnpkg.com/application-server-web-node-plugin/-/application-server-web-node-plugin-1.0.289.tgz#6229a70ae8514cdfbb42893166c695c1e9ba96de"
+  integrity sha512-BhT5AwinIT7ypl2IA1o6JUNziAWrUN8Zamq9MN1CZzZRlOjKIQk8rbFMuSohj7ycHCxm2N0P7qs30vuueYFGTQ==
   dependencies:
     "@types/webpack" "https://registry.yarnpkg.com/@favware/skip-dependency/-/skip-dependency-1.1.1.tgz"
 
