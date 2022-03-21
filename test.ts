@@ -32,7 +32,7 @@ describe('nginx', ():void => {
     })
     // endregion
     // region tests
-    // / region api
+    /// region api
     test('loadService', async ():Promise<void> => {
         try {
             expect(await Index.loadService(
@@ -62,8 +62,8 @@ describe('nginx', ():void => {
         expect(services).toStrictEqual({})
         expect(testValue).toStrictEqual(true)
     })
-    // / endregion
-    // / region helper
+    /// endregion
+    /// region helper
     test('checkReachability', async ():Promise<void> => {
         try {
             await Index.checkReachability(
@@ -84,7 +84,7 @@ describe('nginx', ():void => {
             console.error(error)
         }
     })
-    // / endregion
+    /// endregion
     // endregion
 })
 // region vim modline
