@@ -75,7 +75,10 @@ export class Nginx implements PluginHandler {
         ) as ServiceProcess
 
         services.nginx.reload = ():Promise<string> =>
-            new Promise((resolve:Function, reject:Function):ChildProcess =>
+            new Promise<string>((
+                resolve:(_value:string) => void,
+                reject:(_reason:ExecException) => void
+            ):ChildProcess =>
                 executeChildProcess(
                     'nginx -s reload',
                     (
@@ -84,9 +87,9 @@ export class Nginx implements PluginHandler {
                         standardErrorOutput:string
                     ):void => {
                         if (error) {
-                            (error as ExecException & {
-                                standardErrorOutput:string
-                            }).standardErrorOutput = standardErrorOutput
+                            (error as
+                                (ExecException & {standardErrorOutput:string})
+                            ).standardErrorOutput = standardErrorOutput
                             reject(error)
                         } else
                             resolve(standardOutput)
@@ -94,23 +97,25 @@ export class Nginx implements PluginHandler {
                 )
             )
 
-        let promise:null|Promise<ProcessCloseReason> = new Promise((
-            resolve:Function, reject:Function
-        ):void => {
-            for (const closeEventName of CloseEventNames)
-                (services.nginx as ServiceProcess).on(
-                    closeEventName,
-                    Tools.getProcessCloseHandler(
-                        resolve as ProcessCloseCallback,
-                        (
-                            configuration.applicationServer.proxy.optional ?
-                                resolve :
-                                reject
-                        ) as ProcessErrorCallback,
-                        {reason: services.nginx, process: services.nginx}
+        let promise:null|Promise<ProcessCloseReason> =
+            new Promise<ProcessCloseReason>((
+                resolve:(_value:ProcessCloseReason) => void,
+                reject:(_reason:Error) => void
+            ):void => {
+                for (const closeEventName of CloseEventNames)
+                    (services.nginx as ServiceProcess).on(
+                        closeEventName,
+                        Tools.getProcessCloseHandler(
+                            resolve as ProcessCloseCallback,
+                            (
+                                configuration.applicationServer.proxy.optional ?
+                                    resolve :
+                                    reject
+                            ) as ProcessErrorCallback,
+                            {reason: services.nginx, process: services.nginx}
+                        )
                     )
-                )
-        })
+            })
 
         try {
             await Nginx.checkReachability(configuration.applicationServer)
