@@ -24,7 +24,7 @@ import {
 import {Service as BaseService} from 'web-node/type'
 // endregion
 // region exports
-export type Configuration<PluginConfigurationType = {}> =
+export type Configuration<PluginConfigurationType = Mapping<unknown>> =
     BaseConfiguration<{
         applicationServer:{
             proxy:{
@@ -46,10 +46,10 @@ export interface Service extends BaseService {
 export interface ServiceProcess extends ChildProcess {
     reload():Promise<string>
 }
-export type ServicePromises<ServicePromiseType = {}> =
+export type ServicePromises<ServicePromiseType = Mapping<unknown>> =
     BaseServicePromises<{nginx:Promise<ProcessCloseReason>}> &
     ServicePromiseType
-export type Services<ServiceType = {}> =
+export type Services<ServiceType = Mapping<unknown>> =
     BaseServices<{nginx:null|ServiceProcess}> & ServiceType
 // endregion
 // region vim modline
