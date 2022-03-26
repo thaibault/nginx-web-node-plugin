@@ -56,7 +56,7 @@ export class Nginx implements PluginHandler {
      * service.
      */
     static async loadService(
-        servicePromises:ServicePromises,
+        servicePromises:Omit<ServicePromises, 'nginx'>,
         services:Services,
         configuration:Configuration
     ):Promise<null|Service> {

@@ -36,7 +36,7 @@ describe('nginx', ():void => {
     test('loadService', async ():Promise<void> => {
         try {
             expect(await Index.loadService(
-                {} as ServicePromises,
+                {},
                 {nginx: null} as Services,
                 configuration
             )).toBeNull()
