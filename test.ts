@@ -17,7 +17,7 @@
 import Tools from 'clientnode'
 import {configuration as baseConfiguration, PluginAPI} from 'web-node'
 
-import {Configuration, ServiceProcess, Services, ServicePromises} from './type'
+import {Configuration, ServiceProcess, Services} from './type'
 import Index from './index'
 // endregion
 describe('nginx', ():void => {
