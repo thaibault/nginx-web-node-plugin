@@ -21,7 +21,10 @@ import {
     Services as BaseServices,
     ServicePromises as BaseServicePromises
 } from 'application-server-web-node-plugin/type'
-import {Service as BaseService} from 'web-node/type'
+import {
+    ServicePromisesState as BaseServicePromisesState,
+    ServicesState as BaseServicesState
+} from 'web-node/type'
 // endregion
 // region exports
 export type Configuration<PluginConfigurationType = Mapping<unknown>> =
@@ -39,18 +42,27 @@ export type Configuration<PluginConfigurationType = Mapping<unknown>> =
     }> &
     PluginConfigurationType
 
-export interface Service extends BaseService {
-    name:'nginx'
-    promise:null|Promise<ProcessCloseReason>
-}
 export interface ServiceProcess extends ChildProcess {
     reload():Promise<string>
 }
-export type ServicePromises<ServicePromiseType = Mapping<unknown>> =
+export type ServicePromises<Type = Mapping<unknown>> =
     BaseServicePromises<{nginx:Promise<ProcessCloseReason>}> &
-    ServicePromiseType
-export type Services<ServiceType = Mapping<unknown>> =
-    BaseServices<{nginx:null|ServiceProcess}> & ServiceType
+    Type
+export type Services<Type = Mapping<unknown>> =
+    BaseServices<{nginx:null|ServiceProcess}> &
+    Type
+
+export type ServicesState = BaseServicesState<
+    undefined,
+    Configuration,
+    Services
+>
+export type ServicePromisesState = BaseServicePromisesState<
+    undefined,
+    Configuration,
+    Services,
+    ServicePromises
+>
 // endregion
 // region vim modline
 // vim: set tabstop=4 shiftwidth=4 expandtab:
