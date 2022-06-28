@@ -31,11 +31,9 @@ import {
     ProcessErrorCallback,
     RecursivePartial
 } from 'clientnode/type'
-import {PluginHandler} from 'web-node/type'
+import {PluginHandler, PluginPromises, Services} from 'web-node/type'
 
-import {
-    Configuration, Service, ServiceProcess, ServicePromises, Services
-} from './type'
+import {Configuration, ServiceProcess, ServicePromisesState} from './type'
 // endregion
 // region plugins/classes
 /**
@@ -47,23 +45,21 @@ export class Nginx implements PluginHandler {
     /**
      * Start nginx's child process and return a Promise which observes this
      * service.
-     * @param servicePromises - An object with stored service promise
-     * instances.
-     * @param services - An object with stored service instances.
-     * @param configuration - Mutable by plugins extended configuration object.
+     * @param state - Application state.
+     * @param state.configuration - Applications configuration.
+     * @param state.configuration.applicationServer - Plugins configuration.
+     * @param state.services - An object with stored service instances.
      *
      * @returns A promise which correspond to the plugin specific continues
      * service.
      */
-    static async loadService(
-        servicePromises:Omit<ServicePromises, 'nginx'>,
-        services:Services,
-        configuration:Configuration
-    ):Promise<null|Service> {
+    static async loadService({
+        configuration: {applicationServer: configuration}, services
+    }:ServicePromisesState):Promise<null|PluginPromises> {
         if (Object.prototype.hasOwnProperty.call(services, 'nginx'))
             return null
 
-        services.nginx = spawnChildProcess(
+        const nginx:ServiceProcess = spawnChildProcess(
             'nginx',
             [],
             {
@@ -73,8 +69,9 @@ export class Nginx implements PluginHandler {
                 stdio: 'inherit'
             }
         ) as ServiceProcess
+        services.nginx = nginx
 
-        services.nginx.reload = ():Promise<string> =>
+        nginx.reload = ():Promise<string> =>
             new Promise<string>((
                 resolve:(_value:string) => void,
                 reject:(_reason:ExecException) => void
@@ -103,24 +100,24 @@ export class Nginx implements PluginHandler {
                 reject:(_reason:Error) => void
             ):void => {
                 for (const closeEventName of CloseEventNames)
-                    (services.nginx as ServiceProcess).on(
+                    nginx.on(
                         closeEventName,
                         Tools.getProcessCloseHandler(
                             resolve as ProcessCloseCallback,
                             (
-                                configuration.applicationServer.proxy.optional ?
+                                configuration.proxy.optional ?
                                     resolve :
                                     reject
                             ) as ProcessErrorCallback,
-                            {reason: services.nginx, process: services.nginx}
+                            {reason: nginx, process: nginx}
                         )
                     )
             })
 
         try {
-            await Nginx.checkReachability(configuration.applicationServer)
+            await Nginx.checkReachability(configuration)
         } catch (error) {
-            if (configuration.applicationServer.proxy.optional) {
+            if (configuration.proxy.optional) {
                 console.warn(
                     `Nginx couldn't be started but was marked as optional.`
                 )
@@ -130,18 +127,19 @@ export class Nginx implements PluginHandler {
                 throw error
         }
 
-        return {name: 'nginx', promise}
+        return {nginx: promise}
     }
     /**
      * Application will be closed soon.
-     * @param services - An object with stored service instances.
-     * @param configuration - Mutable by plugins extended configuration object.
+     * @param state - Application state.
+     * @param state.configuration - Applications configuration.
+     * @param state.services - Application services.
      *
      * @returns Given object of services.
      */
     static async shouldExit(
-        services:Services, configuration:Configuration
-    ):Promise<Services> {
+        {configuration, services}:ServicePromisesState
+    ):Promise<void> {
         if (services.nginx !== null) {
             services.nginx.kill('SIGINT')
             await Nginx.checkReachability(
@@ -150,8 +148,6 @@ export class Nginx implements PluginHandler {
         }
 
         delete (services as {nginx?:Services['nginx']}).nginx
-
-        return services
     }
     // endregion
     // region helper

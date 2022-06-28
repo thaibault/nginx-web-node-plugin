@@ -18,7 +18,7 @@ import {beforeAll, describe, expect, test} from '@jest/globals'
 import Tools from 'clientnode'
 import {configuration as baseConfiguration, PluginAPI} from 'web-node'
 
-import {Configuration, ServiceProcess, Services} from './type'
+import {Configuration, ServiceProcess, ServicePromises, Services} from './type'
 import Index from './index'
 // endregion
 describe('nginx', ():void => {
@@ -34,16 +34,15 @@ describe('nginx', ():void => {
     // endregion
     // region tests
     /// region api
-    test('loadService', async ():Promise<void> => {
-        try {
-            expect(await Index.loadService(
-                {},
-                {nginx: null} as Services,
-                configuration
-            )).toBeNull()
-        } catch (error) {
-            console.error(error)
-        }
+    test('loadService', ():void => {
+        void expect(Index.loadService({
+            configuration,
+            hook: 'load',
+            pluginAPI: PluginAPI,
+            plugins: [],
+            servicePromises: {} as ServicePromises,
+            services: {nginx: null} as Services
+        })).resolves.toBeNull()
     })
     test('shouldExit', async ():Promise<void> => {
         let testValue = false
@@ -54,8 +53,14 @@ describe('nginx', ():void => {
         }} as ServiceProcess} as Services
 
         try {
-            expect(await Index.shouldExit(services, configuration))
-                .toStrictEqual(services)
+            await expect(Index.shouldExit({
+                configuration,
+                hook: 'shouldExit',
+                pluginAPI: PluginAPI,
+                plugins: [],
+                servicePromises: {} as ServicePromises,
+                services
+            })).resolves.toBeUndefined()
         } catch (error) {
             console.error(error)
         }
