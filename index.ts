@@ -50,8 +50,8 @@ export class Nginx implements PluginHandler {
      * @param state.configuration.applicationServer - Plugins configuration.
      * @param state.services - An object with stored service instances.
      *
-     * @returns A promise which correspond to the plugin specific continues
-     * service.
+     * @returns A mapping to promises which correspond to the plugin specific
+     * continues services.
      */
     static async loadService({
         configuration: {applicationServer: configuration}, services
