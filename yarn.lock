@@ -1480,9 +1480,9 @@
   integrity sha512-eC4U9MlIcu2q0KQmXszyn5Akca/0jrQmwDRgpAMJai7qBWq4amIQhZyNau4VYGtCeALvW1/NtjzJJ567aZxfKA==
 
 "@types/node@*":
-  version "18.11.18"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.11.18.tgz#8dfb97f0da23c2293e554c5a50d61ef134d7697f"
-  integrity sha512-DHQpWGjyQKSHj3ebjFI/wRKcqQcdR+MoFBygntYOZytCqNfkd2ZC4ARDJ2DQqhjH5p85Nnd3jhUJIXrszFX/JA==
+  version "18.11.19"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.11.19.tgz#35e26df9ec441ab99d73e99e9aca82935eea216d"
+  integrity sha512-YUgMWAQBWLObABqrvx8qKO1enAvBUdjZOAWQ5grBAkp5LQv45jBvYKZ3oFS9iKRCQyFjqw6iuEa1vmFqtxYLZw==
 
 "@types/prettier@^2.1.5":
   version "2.7.2"
@@ -1880,9 +1880,9 @@ anymatch@^3.0.3:
     picomatch "^2.0.4"
 
 application-server-web-node-plugin@*:
-  version "1.0.323"
-  resolved "https://registry.yarnpkg.com/application-server-web-node-plugin/-/application-server-web-node-plugin-1.0.323.tgz#d592fc846c414cded4d98c34009410faddd81b7b"
-  integrity sha512-Au4XfLGqkaeku6fafccJaSvczks8XsU0HJ4GqNa76VLHrNewFuRtA/PQUQWhwF9VfzKljf0n7cj+NyNwPU8tOw==
+  version "1.0.324"
+  resolved "https://registry.yarnpkg.com/application-server-web-node-plugin/-/application-server-web-node-plugin-1.0.324.tgz#d9d767c954e7b787660217c79f3534a5a20e2e3c"
+  integrity sha512-2s+ryv3A1ZLYR3gP9hOuik8OaBSY3hPw4xu1sPI0HUD5Ry862JcmdAwEAFWhw2YihUxHuvTvMaEy0nKmRLs8Gg==
 
 argparse@^1.0.7:
   version "1.0.10"
@@ -2930,9 +2930,9 @@ cli-table3@^0.5.0:
     colors "^1.1.2"
 
 clientnode@*:
-  version "3.0.1018"
-  resolved "https://registry.yarnpkg.com/clientnode/-/clientnode-3.0.1018.tgz#29dccb215e7b973e6ee8077b1aa37d8884182cf1"
-  integrity sha512-jDMSmIJoPeYBJzPwL9+17fFiQP4QwgaWdsNgoDsEg1OCxTLr8n6QxvysuE8Rc4+N/lFQu1L7V91EEPzMKmP6ng==
+  version "3.0.1020"
+  resolved "https://registry.yarnpkg.com/clientnode/-/clientnode-3.0.1020.tgz#a49c80657b9cf72f9b6bb8935237cb9603c8db7d"
+  integrity sha512-Ld26ZQWJ7FWh7JPjqvchsixLkOiVxkDUdRmb9b+IBf564+kE1P289r4C/rZCbVW4j5DOGnCZ/rfpg2kuiwNG0w==
 
 cliui@^4.0.0:
   version "4.1.0"
@@ -5054,9 +5054,9 @@ node-int64@^0.4.0:
   integrity sha512-O5lz91xSOeoXP6DulyHfllpq+Eg00MWitZIbtPfoSEvqIHdl5gfcY6hYzDWnj0qD5tz52PI08u9qUvSVeUBeHw==
 
 node-releases@^2.0.8:
-  version "2.0.9"
-  resolved "https://registry.yarnpkg.com/node-releases/-/node-releases-2.0.9.tgz#fe66405285382b0c4ac6bcfbfbe7e8a510650b4d"
-  integrity sha512-2xfmOrRkGogbTK9R6Leda0DGiXeY3p2NJpy4+gNCffdUvV6mdEJnaDEic1i3Ec2djAo8jWYoJMR5PB0MSMpxUA==
+  version "2.0.10"
+  resolved "https://registry.yarnpkg.com/node-releases/-/node-releases-2.0.10.tgz#c311ebae3b6a148c89b1813fd7c4d3c024ef537f"
+  integrity sha512-5GFldHPXVG/YZmFzJvKK2zDSzPKhEp0+ZR5SVaoSag9fsL5YgHbUHDfnG5494ISANDcK4KwPXAx2xqVEydmd7w==
 
 normalize-path@^3.0.0:
   version "3.0.0"
@@ -6158,9 +6158,9 @@ watchpack@^2.4.0:
     graceful-fs "^4.1.2"
 
 web-node@*:
-  version "1.0.474"
-  resolved "https://registry.yarnpkg.com/web-node/-/web-node-1.0.474.tgz#318f787ccde6f444cdf94624eba217fe72bad92d"
-  integrity sha512-DOHGZSchQWT0fp+vYfxsV3l1lpCDeMj9w8IXlaFp005YUE7sO+JVDjpqEkaOmkFJZtueipFxS0RuS+Bo+P2kAg==
+  version "1.0.475"
+  resolved "https://registry.yarnpkg.com/web-node/-/web-node-1.0.475.tgz#de4370a454d1841456819bb3dd7ca708aa977106"
+  integrity sha512-xa+aYpCVe3vdIzhiDVDhhk+2R3woLkG7U8UI1fSTEp3Hgsf2BuFYKDNPh0/FTyoxAJm2uGKrNaabJ6Jr+ShBAA==
 
 web-streams-polyfill@^3.0.3:
   version "3.2.1"
@@ -6173,9 +6173,9 @@ webidl-conversions@^7.0.0:
   integrity sha512-VwddBukDzu71offAQR975unBIGqfKZpM+8ZX6ySk8nYhVoo5CYaZyzt3YBvYtRtO+aoGlqxPg/B87NGVZ/fu6g==
 
 weboptimizer@*:
-  version "2.0.1285"
-  resolved "https://registry.yarnpkg.com/weboptimizer/-/weboptimizer-2.0.1285.tgz#5197e70bfa8ce577305c8033b47ae3ac653dfb54"
-  integrity sha512-gD/qoKamqqw0gcnwMavJg+cqGVHkeCSvV3J25gBCjhxwLMzv6JcAVo1YGtI9kW2X2ksWM289fRYtTSeQbke0tw==
+  version "2.0.1288"
+  resolved "https://registry.yarnpkg.com/weboptimizer/-/weboptimizer-2.0.1288.tgz#1b69e1a56401fad437ef02d4f426b9259d3d557b"
+  integrity sha512-qCv//WfH2/v7pRyciaaNshC0dsCWsa0IObusDlnEoRRwgfMlh8X960b+R61+b0OcM4raTKFMZoacVY62jgOaKA==
   dependencies:
     "@babel/core" "*"
     "@babel/plugin-proposal-decorators" "*"
