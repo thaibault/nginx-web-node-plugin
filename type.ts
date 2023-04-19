@@ -18,8 +18,8 @@ import {ChildProcess} from 'child_process'
 import {Mapping, ProcessCloseReason} from 'clientnode/type'
 import {
     Configuration as BaseConfiguration,
-    Services as BaseServices,
-    ServicePromises as BaseServicePromises
+    ServicePromises as BaseServicePromises,
+    Services as BaseServices
 } from 'application-server-web-node-plugin/type'
 import {
     ServicePromisesState as BaseServicePromisesState,
