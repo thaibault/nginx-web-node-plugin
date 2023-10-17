@@ -13,8 +13,8 @@ endregion -->
 Project status
 --------------
 
-[![npm](https://img.shields.io/npm/v/nginx-web-node-plugin?color=%23d55e5d&label=npm%20package%20version&logoColor=%23d55e5d&style=for-the-badge)](https://www.npmjs.com/package/nginx-web-node-plugin)
-[![npm downloads](https://img.shields.io/npm/dy/nginx-web-node-plugin.svg?style=for-the-badge)](https://www.npmjs.com/package/nginx-web-node-plugin)
+[![npm](https://img.shields.io/npm/v/nginxwebnodeplugin?color=%23d55e5d&label=npm%20package%20version&logoColor=%23d55e5d&style=for-the-badge)](https://www.npmjs.com/package/nginx-web-node-plugin)
+[![npm downloads](https://img.shields.io/npm/dy/nginxwebnodeplugin.svg?style=for-the-badge)](https://www.npmjs.com/package/nginx-web-node-plugin)
 
 [![build](https://img.shields.io/github/actions/workflow/status/thaibault/nginx-web-node-plugin/build.yaml?style=for-the-badge)](https://github.com/thaibault/nginx-web-node-plugin/actions/workflows/build.yaml)
 
