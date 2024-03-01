@@ -56,7 +56,7 @@
     "@typescript-eslint/parser": "^7.1.0",
     "application-server-web-node-plugin": "^1.0.351",
     "clientnode": "^3.0.1136",
-    "documentation-website": "^1.0.325",
+    "documentation-website": "^1.0.326",
     "eslint": "^8.57.0",
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-jsdoc": "^48.2.0",
