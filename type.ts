@@ -14,13 +14,13 @@
     endregion
 */
 // region imports
-import {ChildProcess} from 'child_process'
-import {Mapping, ProcessCloseReason} from 'clientnode/type'
 import {
     Configuration as BaseConfiguration,
     ServicePromises as BaseServicePromises,
     Services as BaseServices
 } from 'application-server-web-node-plugin/type'
+import {ChildProcess} from 'child_process'
+import {Mapping, ProcessCloseReason} from 'clientnode'
 import {
     ServicePromisesState as BaseServicePromisesState,
     ServicesState as BaseServicesState
@@ -63,8 +63,4 @@ export type ServicePromisesState = BaseServicePromisesState<
     Services,
     ServicePromises
 >
-// endregion
-// region vim modline
-// vim: set tabstop=4 shiftwidth=4 expandtab:
-// vim: foldmethod=marker foldmarker=region,endregion:
 // endregion

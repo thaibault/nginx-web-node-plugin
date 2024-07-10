@@ -23,14 +23,17 @@ import {
     ExecException,
     spawn as spawnChildProcess
 } from 'child_process'
-import Tools, {CloseEventNames} from 'clientnode'
 import {
+    checkReachability,
     CheckReachabilityOptions,
+    checkUnreachability,
+    CLOSE_EVENT_NAMES,
+    getProcessCloseHandler,
     ProcessCloseCallback,
     ProcessCloseReason,
     ProcessErrorCallback,
     RecursivePartial
-} from 'clientnode/type'
+} from 'clientnode'
 import {PluginHandler, PluginPromises, Services} from 'web-node/type'
 
 import {Configuration, ServiceProcess, ServicePromisesState} from './type'
@@ -49,7 +52,6 @@ export class Nginx implements PluginHandler {
      * @param state.configuration - Applications configuration.
      * @param state.configuration.applicationServer - Plugins configuration.
      * @param state.services - An object with stored service instances.
-     *
      * @returns A mapping to promises which correspond to the plugin specific
      * continues services.
      */
@@ -98,11 +100,11 @@ export class Nginx implements PluginHandler {
             new Promise<ProcessCloseReason>((
                 resolve:(_value:ProcessCloseReason) => void,
                 reject:(_reason:Error) => void
-            ):void => {
-                for (const closeEventName of CloseEventNames)
+            ) => {
+                for (const closeEventName of CLOSE_EVENT_NAMES)
                     nginx.on(
                         closeEventName,
-                        Tools.getProcessCloseHandler(
+                        getProcessCloseHandler(
                             resolve as ProcessCloseCallback,
                             (
                                 configuration.proxy.optional ?
@@ -134,7 +136,6 @@ export class Nginx implements PluginHandler {
      * @param state - Application state.
      * @param state.configuration - Applications configuration.
      * @param state.services - Application services.
-     *
      * @returns Given object of services.
      */
     static async shouldExit(
@@ -159,7 +160,6 @@ export class Nginx implements PluginHandler {
      * or un-reachability.
      * @param givenOptions - Tools reachability options to configure how to
      * check for reachability.
-     *
      * @returns A promise which will be resolved if a request to given url has
      * (not) finished. Otherwise returned promise will be rejected.
      */
@@ -192,9 +192,9 @@ export class Nginx implements PluginHandler {
                 ...givenOptions
             }
 
-            return (
-                inverse ? Tools.checkUnreachability : Tools.checkReachability
-            )(url, options)
+            return (inverse ? checkUnreachability : checkReachability)(
+                url, options
+            )
         }
 
         return Promise.resolve(null)
@@ -202,8 +202,4 @@ export class Nginx implements PluginHandler {
     // endregion
 }
 export default Nginx
-// endregion
-// region vim modline
-// vim: set tabstop=4 shiftwidth=4 expandtab:
-// vim: foldmethod=marker foldmarker=region,endregion:
 // endregion
