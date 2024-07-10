@@ -15,7 +15,7 @@
 */
 // region imports
 import {beforeAll, describe, expect, test} from '@jest/globals'
-import Tools from 'clientnode'
+import {copy} from 'clientnode'
 import {configuration as baseConfiguration, PluginAPI} from 'web-node'
 
 import {Configuration, ServiceProcess, ServicePromises, Services} from './type'
@@ -26,7 +26,7 @@ describe('nginx', ():void => {
     let configuration:Configuration
     beforeAll(async ():Promise<void> => {
         configuration = {
-            ...(await PluginAPI.loadAll(Tools.copy(baseConfiguration)))
+            ...(await PluginAPI.loadAll(copy(baseConfiguration)))
                 .configuration,
             applicationServer: {proxy: {ports: {backend: {}}}}
         } as unknown as Configuration
@@ -93,7 +93,3 @@ describe('nginx', ():void => {
     /// endregion
     // endregion
 })
-// region vim modline
-// vim: set tabstop=4 shiftwidth=4 expandtab:
-// vim: foldmethod=marker foldmarker=region,endregion:
-// endregion
