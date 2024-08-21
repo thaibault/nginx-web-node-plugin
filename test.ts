@@ -16,17 +16,17 @@
 // region imports
 import {beforeAll, describe, expect, test} from '@jest/globals'
 import {copy} from 'clientnode'
-import {configuration as baseConfiguration, PluginAPI} from 'web-node'
+import {configuration as baseConfiguration, loadAll, pluginAPI} from 'web-node'
 
 import {Configuration, ServiceProcess, ServicePromises, Services} from './type'
-import Index from './index'
+import {checkReachability, loadService, shouldExit} from './index'
 // endregion
 describe('nginx', ():void => {
     // region mockup
     let configuration:Configuration
     beforeAll(async ():Promise<void> => {
         configuration = {
-            ...(await PluginAPI.loadAll(copy(baseConfiguration)))
+            ...(await loadAll(copy(baseConfiguration)))
                 .configuration,
             applicationServer: {proxy: {ports: {backend: {}}}}
         } as unknown as Configuration
@@ -35,10 +35,10 @@ describe('nginx', ():void => {
     // region tests
     /// region api
     test('loadService', ():void => {
-        void expect(Index.loadService({
+        void expect(loadService({
             configuration,
             hook: 'load',
-            pluginAPI: PluginAPI,
+            pluginAPI,
             plugins: [],
             servicePromises: {} as ServicePromises,
             services: {nginx: null} as Services
@@ -53,10 +53,10 @@ describe('nginx', ():void => {
         }} as ServiceProcess} as Services
 
         try {
-            await expect(Index.shouldExit({
+            await expect(shouldExit({
                 configuration,
                 hook: 'shouldExit',
-                pluginAPI: PluginAPI,
+                pluginAPI,
                 plugins: [],
                 servicePromises: {} as ServicePromises,
                 services
@@ -72,17 +72,17 @@ describe('nginx', ():void => {
     /// region helper
     test('checkReachability', async ():Promise<void> => {
         try {
-            await Index.checkReachability(
+            await checkReachability(
                 configuration.applicationServer, false, {timeoutInSeconds: .2}
             )
-        } catch (error) {
+        } catch (_error) {
             // Ignore error.
         }
 
         expect(true).toStrictEqual(true)
 
         try {
-            await Index.checkReachability(
+            await checkReachability(
                 configuration.applicationServer, true, {timeoutInSeconds: .2}
             )
             expect(true).toStrictEqual(true)
