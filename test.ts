@@ -21,10 +21,10 @@ import {configuration as baseConfiguration, loadAll, pluginAPI} from 'web-node'
 import {Configuration, ServiceProcess, ServicePromises, Services} from './type'
 import {checkReachability, loadService, shouldExit} from './index'
 // endregion
-describe('nginx', ():void => {
+describe('nginx', (): void => {
     // region mockup
-    let configuration:Configuration
-    beforeAll(async ():Promise<void> => {
+    let configuration: Configuration
+    beforeAll(async (): Promise<void> => {
         configuration = {
             ...(await loadAll(copy(baseConfiguration)))
                 .configuration,
@@ -34,7 +34,7 @@ describe('nginx', ():void => {
     // endregion
     // region tests
     /// region api
-    test('loadService', ():void => {
+    test('loadService', (): void => {
         void expect(loadService({
             configuration,
             hook: 'load',
@@ -44,9 +44,9 @@ describe('nginx', ():void => {
             services: {nginx: null} as Services
         })).resolves.toBeNull()
     })
-    test('shouldExit', async ():Promise<void> => {
+    test('shouldExit', async (): Promise<void> => {
         let testValue = false
-        const services:Services = {nginx: {kill: ():boolean => {
+        const services: Services = {nginx: {kill: (): boolean => {
             testValue = true
 
             return true
@@ -70,7 +70,7 @@ describe('nginx', ():void => {
     })
     /// endregion
     /// region helper
-    test('checkReachability', async ():Promise<void> => {
+    test('checkReachability', async (): Promise<void> => {
         try {
             await checkReachability(
                 configuration.applicationServer, false, {timeoutInSeconds: .2}

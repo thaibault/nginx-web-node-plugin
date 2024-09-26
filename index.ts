@@ -56,11 +56,11 @@ import {Configuration, ServiceProcess, ServicePromisesState} from './type'
  */
 export const loadService = async ({
     configuration: {applicationServer: configuration}, services
-}:ServicePromisesState):Promise<null|PluginPromises> => {
+}: ServicePromisesState): Promise<null|PluginPromises> => {
     if (Object.prototype.hasOwnProperty.call(services, 'nginx'))
         return null
 
-    const nginx:ServiceProcess = spawnChildProcess(
+    const nginx: ServiceProcess = spawnChildProcess(
         'nginx',
         [],
         {
@@ -72,21 +72,21 @@ export const loadService = async ({
     ) as ServiceProcess
     services.nginx = nginx
 
-    nginx.reload = ():Promise<string> =>
+    nginx.reload = (): Promise<string> =>
         new Promise<string>((
-            resolve:(value:string) => void,
-            reject:(reason:ExecException) => void
-        ):ChildProcess =>
+            resolve: (value: string) => void,
+            reject: (reason: ExecException) => void
+        ): ChildProcess =>
             executeChildProcess(
                 'nginx -s reload',
                 (
-                    error:ExecException|null,
-                    standardOutput:string,
-                    standardErrorOutput:string
+                    error: ExecException|null,
+                    standardOutput: string,
+                    standardErrorOutput: string
                 ) => {
                     if (error) {
                         (error as
-                            (ExecException & {standardErrorOutput:string})
+                            (ExecException & {standardErrorOutput: string})
                         ).standardErrorOutput = standardErrorOutput
                         reject(error)
                     } else
@@ -95,10 +95,10 @@ export const loadService = async ({
             )
         )
 
-    let promise:null|Promise<ProcessCloseReason> =
+    let promise: null|Promise<ProcessCloseReason> =
         new Promise<ProcessCloseReason>((
-            resolve:(value:ProcessCloseReason) => void,
-            reject:(reason:Error) => void
+            resolve: (value: ProcessCloseReason) => void,
+            reject: (reason: Error) => void
         ) => {
             for (const closeEventName of CLOSE_EVENT_NAMES)
                 nginx.on(
@@ -138,14 +138,14 @@ export const loadService = async ({
  * @returns Given object of services.
  */
 export const shouldExit = async (
-    {configuration, services}:ServicePromisesState
-):Promise<void> => {
+    {configuration, services}: ServicePromisesState
+): Promise<void> => {
     if (services.nginx !== null) {
         services.nginx.kill('SIGINT')
         await checkReachability(configuration.applicationServer, true)
     }
 
-    delete (services as {nginx?:Services['nginx']}).nginx
+    delete (services as {nginx?: Services['nginx']}).nginx
 }
 // endregion
 // region helper
@@ -161,10 +161,10 @@ export const shouldExit = async (
  * (not) finished, otherwise returned promise will be rejected.
  */
 export const checkReachability = (
-    serverConfiguration:Configuration['applicationServer'],
+    serverConfiguration: Configuration['applicationServer'],
     inverse = false,
-    givenOptions:RecursivePartial<CheckReachabilityOptions> = {}
-):Promise<Response|Error|null|Promise<Error|null>> => {
+    givenOptions: RecursivePartial<CheckReachabilityOptions> = {}
+): Promise<Response|Error|null|Promise<Error|null>> => {
     if (
         Object.values(serverConfiguration.proxy.ports.backend).length > 0
     ) {
@@ -176,7 +176,7 @@ export const checkReachability = (
             `://${serverConfiguration.hostName}:` +
             String(Object.values(serverConfiguration.proxy.ports.backend)[0])
 
-        const options:RecursivePartial<CheckReachabilityOptions> = {
+        const options: RecursivePartial<CheckReachabilityOptions> = {
             options: {redirect: 'manual'},
             pollIntervallInSeconds: .1,
             statusCodes: [

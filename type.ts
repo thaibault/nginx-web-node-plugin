@@ -29,27 +29,27 @@ import {
 // region exports
 export type Configuration<PluginConfigurationType = Mapping<unknown>> =
     BaseConfiguration<{
-        applicationServer:{
-            proxy:{
-                optional:boolean
-                logFilePath:{
-                    access:string
-                    error:string
+        applicationServer: {
+            proxy: {
+                optional: boolean
+                logFilePath: {
+                    access: string
+                    error: string
                 }
-                ports:{backend:Mapping<number>}
+                ports: {backend: Mapping<number>}
             }
         }
     }> &
     PluginConfigurationType
 
 export interface ServiceProcess extends ChildProcess {
-    reload():Promise<string>
+    reload(): Promise<string>
 }
 export type ServicePromises<Type = Mapping<unknown>> =
-    BaseServicePromises<{nginx:Promise<ProcessCloseReason>}> &
+    BaseServicePromises<{nginx: Promise<ProcessCloseReason>}> &
     Type
 export type Services<Type = Mapping<unknown>> =
-    BaseServices<{nginx:null|ServiceProcess}> &
+    BaseServices<{nginx: null|ServiceProcess}> &
     Type
 
 export type ServicesState = BaseServicesState<
