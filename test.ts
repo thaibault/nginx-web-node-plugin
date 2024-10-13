@@ -37,6 +37,7 @@ describe('nginx', (): void => {
     test('loadService', (): void => {
         void expect(loadService({
             configuration,
+            data: undefined,
             hook: 'load',
             pluginAPI,
             plugins: [],
@@ -55,6 +56,7 @@ describe('nginx', (): void => {
         try {
             await expect(shouldExit({
                 configuration,
+                data: undefined,
                 hook: 'shouldExit',
                 pluginAPI,
                 plugins: [],
