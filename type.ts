@@ -49,7 +49,7 @@ export type ServicePromises<Type = Mapping<unknown>> =
     BaseServicePromises<{nginx: Promise<ProcessCloseReason>}> &
     Type
 export type Services<Type = Mapping<unknown>> =
-    BaseServices<{nginx: null|ServiceProcess}> &
+    BaseServices<{nginx: null | ServiceProcess}> &
     Type
 
 export type ServicesState = BaseServicesState<
