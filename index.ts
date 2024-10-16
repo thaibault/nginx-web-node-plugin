@@ -56,7 +56,7 @@ import {Configuration, ServiceProcess, ServicePromisesState} from './type'
  */
 export const loadService = async ({
     configuration: {applicationServer: configuration}, services
-}: ServicePromisesState): Promise<null|PluginPromises> => {
+}: ServicePromisesState): Promise<null | PluginPromises> => {
     if (Object.prototype.hasOwnProperty.call(services, 'nginx'))
         return null
 
@@ -80,7 +80,7 @@ export const loadService = async ({
             executeChildProcess(
                 'nginx -s reload',
                 (
-                    error: ExecException|null,
+                    error: ExecException | null,
                     standardOutput: string,
                     standardErrorOutput: string
                 ) => {
@@ -95,7 +95,7 @@ export const loadService = async ({
             )
         )
 
-    let promise: null|Promise<ProcessCloseReason> =
+    let promise: null | Promise<ProcessCloseReason> =
         new Promise<ProcessCloseReason>((
             resolve: (value: ProcessCloseReason) => void,
             reject: (reason: Error) => void
@@ -164,7 +164,7 @@ export const checkReachability = (
     serverConfiguration: Configuration['applicationServer'],
     inverse = false,
     givenOptions: RecursivePartial<CheckReachabilityOptions> = {}
-): Promise<Response|Error|null|Promise<Error|null>> => {
+): Promise<Error | null | Promise<Error | null> | Response> => {
     if (
         Object.values(serverConfiguration.proxy.ports.backend).length > 0
     ) {
