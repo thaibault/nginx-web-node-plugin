@@ -77,7 +77,7 @@ describe('nginx', (): void => {
             await checkReachability(
                 configuration.applicationServer, false, {timeoutInSeconds: .2}
             )
-        } catch (_error) {
+        } catch {
             // Ignore error.
         }
 
