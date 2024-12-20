@@ -42,7 +42,7 @@ describe('nginx', (): void => {
             pluginAPI,
             plugins: [],
             servicePromises: {} as ServicePromises,
-            services: {nginx: null} as Services
+            services: {nginx: {}} as Services
         })).resolves.toBeNull()
     })
     test('shouldExit', async (): Promise<void> => {
