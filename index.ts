@@ -34,6 +34,7 @@ import {
     ProcessErrorCallback,
     RecursivePartial
 } from 'clientnode'
+import {Agent as HTTPSAgent} from 'https'
 import {PluginHandler, PluginPromises, Services} from 'web-node/type'
 
 import {Configuration, ServiceProcess, ServicePromisesState} from './type'
@@ -166,19 +167,21 @@ export const checkReachability = (
     inverse = false,
     givenOptions: RecursivePartial<CheckReachabilityOptions> = {}
 ): Promise<Error | null | Promise<Error | null> | Response> => {
-    if (
-        Object.values(serverConfiguration.proxy.ports.backend).length > 0
-    ) {
+    if (Object.values(serverConfiguration.proxy.ports.backend).length > 0) {
+        const isSSL =
+            Object.values(serverConfiguration.proxy.ports.backend)[0] === 443
         const url =
-            'http' +
-            (Object.values(serverConfiguration.proxy.ports.backend)[0] ===
-                443 ? 's' : ''
-            ) +
-            `://${serverConfiguration.hostName}:` +
+            `http${isSSL ? 's' : ''}://${serverConfiguration.hostName}:` +
             String(Object.values(serverConfiguration.proxy.ports.backend)[0])
 
         const options: RecursivePartial<CheckReachabilityOptions> = {
-            options: {redirect: 'manual'},
+            options: {
+                redirect: 'manual',
+                ...(isSSL ?
+                    {agent: new HTTPSAgent({rejectUnauthorized: false})} :
+                    {}
+                )
+            },
             pollIntervallInSeconds: .1,
             statusCodes: [
                 100, 101, 102,
