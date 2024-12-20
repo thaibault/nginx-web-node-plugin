@@ -57,7 +57,7 @@ import {Configuration, ServiceProcess, ServicePromisesState} from './type'
 export const loadService = async ({
     configuration: {applicationServer: configuration}, services
 }: ServicePromisesState): Promise<null | PluginPromises> => {
-    if (Object.prototype.hasOwnProperty.call(services, 'nginx'))
+    if (services.nginx)
         return null
 
     const nginx: ServiceProcess = spawnChildProcess(
@@ -72,8 +72,8 @@ export const loadService = async ({
     ) as ServiceProcess
     services.nginx = nginx
 
-    nginx.reload = (): Promise<string> =>
-        new Promise<string>((
+    nginx.reload = (): Promise<string> => {
+        return new Promise<string>((
             resolve: (value: string) => void,
             reject: (reason: ExecException) => void
         ): ChildProcess =>
@@ -94,6 +94,7 @@ export const loadService = async ({
                 }
             )
         )
+    }
 
     let promise: null | Promise<ProcessCloseReason> =
         new Promise<ProcessCloseReason>((

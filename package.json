@@ -52,8 +52,8 @@
     "@babel/runtime": "^7.26.0",
     "@stylistic/eslint-plugin-ts": "^2.12.1",
     "@types/node": "^22.10.2",
-    "@typescript-eslint/eslint-plugin": "^8.17.0",
-    "@typescript-eslint/parser": "^8.17.0",
+    "@typescript-eslint/eslint-plugin": "^8.18.1",
+    "@typescript-eslint/parser": "^8.18.1",
     "application-server-web-node-plugin": "^1.0.370",
     "clientnode": "^3.0.1253",
     "documentation-website": "^1.0.341",
@@ -64,7 +64,7 @@
     "jsdoc": "^4.0.4",
     "node-fetch": "^3.3.2",
     "typescript-eslint": "^8.18.1",
-    "web-node": "^1.0.536",
+    "web-node": "^1.0.537",
     "weboptimizer": "^2.0.1550"
   },
   "peerDependencies": {
