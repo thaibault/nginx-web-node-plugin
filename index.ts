@@ -167,12 +167,8 @@ export const checkReachability = (
     inverse = false,
     givenOptions: RecursivePartial<CheckReachabilityOptions> = {}
 ): Promise<Error | null | Promise<Error | null> | Response> => {
-    if (Object.values(serverConfiguration.proxy.ports.backend).length > 0) {
-        const isSSL =
-            Object.values(serverConfiguration.proxy.ports.backend)[0] === 443
-        const url =
-            `http${isSSL ? 's' : ''}://${serverConfiguration.hostName}:` +
-            String(Object.values(serverConfiguration.proxy.ports.backend)[0])
+    if (serverConfiguration.proxy.url) {
+        const isSSL = serverConfiguration.proxy.url.startsWith('https://')
 
         const options: RecursivePartial<CheckReachabilityOptions> = {
             options: {
@@ -194,7 +190,7 @@ export const checkReachability = (
         }
 
         return (inverse ? checkUnreachability : plainCheckReachability)(
-            url, options
+            serverConfiguration.proxy.url, options
         )
     }
 
