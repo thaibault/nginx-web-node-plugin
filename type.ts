@@ -36,7 +36,7 @@ export type Configuration<PluginConfigurationType = Mapping<unknown>> =
                     access: string
                     error: string
                 }
-                ports: {backend: Mapping<number>}
+                url: string
             }
         }
     }> &
