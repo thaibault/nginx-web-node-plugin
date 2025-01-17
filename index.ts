@@ -32,7 +32,8 @@ import {
     ProcessCloseCallback,
     ProcessCloseReason,
     ProcessErrorCallback,
-    RecursivePartial
+    RecursivePartial,
+    represent
 } from 'clientnode'
 import {Agent as HTTPSAgent} from 'https'
 import {PluginHandler, PluginPromises, Services} from 'web-node/type'
@@ -122,12 +123,18 @@ export const loadService = async ({
     } catch (error) {
         if (configuration.proxy.optional) {
             console.warn(
-                `Nginx couldn't be started but was marked as optional.`
+                `Nginx couldn't be started (or at least ` +
+                `"${configuration.proxy.url}" could not be reached) but was ` +
+                'marked as optional.'
             )
             services.nginx = null
             promise = null
         } else
-            throw error
+            throw new Error(
+                'Could acknowledge that nginx is running because ' +
+                `"${configuration.proxy.url}" is not reachable: ` +
+                represent(error)
+            )
     }
 
     return {nginx: promise}
