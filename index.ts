@@ -131,7 +131,7 @@ export const loadService = async ({
             promise = null
         } else
             throw new Error(
-                'Could acknowledge that nginx is running because ' +
+                'Could not acknowledge that nginx is running because ' +
                 `"${configuration.proxy.url}" is not reachable: ` +
                 represent(error)
             )
