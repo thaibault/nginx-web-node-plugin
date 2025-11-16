@@ -29,6 +29,7 @@ import {
     checkUnreachability,
     CLOSE_EVENT_NAMES,
     getProcessCloseHandler,
+    Logger,
     ProcessCloseCallback,
     ProcessCloseReason,
     ProcessErrorCallback,
@@ -36,11 +37,11 @@ import {
     represent
 } from 'clientnode'
 import {Agent as HTTPSAgent} from 'https'
-import {log} from 'web-node'
 import {PluginHandler, PluginPromises, Services} from 'web-node/type'
 
 import {Configuration, ServiceProcess, ServicePromisesState} from './type'
 // endregion
+export const log = new Logger({name: 'web-node.nginx'})
 // region plugins/classes
 /**
  * Launches an application server und triggers all some pluginable hooks on
