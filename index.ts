@@ -36,6 +36,7 @@ import {
     represent
 } from 'clientnode'
 import {Agent as HTTPSAgent} from 'https'
+import {log} from 'web-node'
 import {PluginHandler, PluginPromises, Services} from 'web-node/type'
 
 import {Configuration, ServiceProcess, ServicePromisesState} from './type'
@@ -122,9 +123,9 @@ export const loadService = async ({
         await checkReachability(configuration)
     } catch (error) {
         if (configuration.proxy.optional) {
-            console.warn(
-                `Nginx couldn't be started (or at least ` +
-                `"${configuration.proxy.url}" could not be reached) but was ` +
+            log.warn(
+                `Nginx couldn't be started (or at least`,
+                `"${configuration.proxy.url}" could not be reached) but was`,
                 'marked as optional.'
             )
             services.nginx = null
