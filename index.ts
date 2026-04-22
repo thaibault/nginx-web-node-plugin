@@ -30,7 +30,6 @@ import {
     CLOSE_EVENT_NAMES,
     getProcessCloseHandler,
     Logger,
-    ProcessCloseCallback,
     ProcessCloseReason,
     ProcessErrorCallback,
     RecursivePartial,
@@ -109,7 +108,7 @@ export const loadService = async ({
                 nginx.on(
                     closeEventName,
                     getProcessCloseHandler(
-                        resolve as ProcessCloseCallback,
+                        resolve,
                         (
                             configuration.proxy.optional ?
                                 resolve :
