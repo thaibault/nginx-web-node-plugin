@@ -17,28 +17,31 @@
     endregion
 */
 // region imports
+import type {ChildProcess, ExecException} from 'child_process'
+import type {
+    CheckReachabilityOptions,
+    ProcessCloseReason,
+    ProcessErrorCallback,
+    RecursivePartial
+} from 'clientnode'
+import type {PluginPromises, Services} from 'web-node/type'
+
+import type {
+    Configuration, PluginHandler, ServiceProcess, ServicePromisesState
+} from './type'
+
 import {
-    ChildProcess,
-    exec as executeChildProcess,
-    ExecException,
-    spawn as spawnChildProcess
+    exec as executeChildProcess, spawn as spawnChildProcess
 } from 'child_process'
 import {
     checkReachability as plainCheckReachability,
-    CheckReachabilityOptions,
     checkUnreachability,
     CLOSE_EVENT_NAMES,
     getProcessCloseHandler,
     Logger,
-    ProcessCloseReason,
-    ProcessErrorCallback,
-    RecursivePartial,
     represent
 } from 'clientnode'
 import {Agent as HTTPSAgent} from 'https'
-import {PluginHandler, PluginPromises, Services} from 'web-node/type'
-
-import {Configuration, ServiceProcess, ServicePromisesState} from './type'
 // endregion
 export const log = new Logger({name: 'web-node.nginx'})
 // region plugins/classes
@@ -91,7 +94,15 @@ export const loadService = async ({
                         (error as
                             (ExecException & {standardErrorOutput: string})
                         ).standardErrorOutput = standardErrorOutput
+                        /*
+                            eslint-disable
+                            @typescript-eslint/prefer-promise-reject-errors
+                        */
                         reject(error)
+                        /*
+                            eslint-enable
+                            @typescript-eslint/prefer-promise-reject-errors
+                        */
                     } else
                         resolve(standardOutput)
                 }
@@ -207,6 +218,11 @@ export const checkReachability = (
 }
 // endregion
 
-export const nginx = module.exports satisfies PluginHandler
+export const nginx = {
+    loadService,
+    shouldExit,
+
+    checkReachability
+} as PluginHandler
 export default nginx
 // endregion
