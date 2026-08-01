@@ -8,20 +8,23 @@
     License
     -------
 
-    This library written by Torben Sickert stand under a creative commons
+    This library written by Torben Sickert stands under a creative commons
     naming 3.0 unported license.
     See https://creativecommons.org/licenses/by/3.0/deed.de
     endregion
 */
 // region imports
-import {
+import type {
     Configuration as BaseConfiguration,
     ServicePromises as BaseServicePromises,
-    Services as BaseServices
+    Services as BaseServices,
+    PluginHandler as BasePluginHandler
 } from 'application-server-web-node-plugin/type'
-import {ChildProcess} from 'child_process'
-import {Mapping, ProcessCloseReason} from 'clientnode'
-import {
+import type {ChildProcess} from 'child_process'
+import type {
+    CheckReachabilityOptions, Mapping, ProcessCloseReason, RecursivePartial
+} from 'clientnode'
+import type {
     ServicePromisesState as BaseServicePromisesState,
     ServicesState as BaseServicesState
 } from 'web-node/type'
@@ -63,4 +66,12 @@ export type ServicePromisesState = BaseServicePromisesState<
     Services,
     ServicePromises
 >
+
+export interface PluginHandler extends BasePluginHandler {
+    checkReachability(
+        serverConfiguration: Configuration['applicationServer'],
+        inverse: boolean,
+        givenOptions: RecursivePartial<CheckReachabilityOptions>
+    ): Promise<Error | null | Promise<Error | null> | Response>
+}
 // endregion
