@@ -3487,13 +3487,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"application-server-web-node-plugin@npm:^1.0.404":
-  version: 1.0.404
-  resolution: "application-server-web-node-plugin@npm:1.0.404"
+"application-server-web-node-plugin@npm:^1.0.405":
+  version: 1.0.405
+  resolution: "application-server-web-node-plugin@npm:1.0.405"
   peerDependencies:
     clientnode: "*"
     web-node: "*"
-  checksum: 10c0/8538c7a89d80c10c0ee17af0e16f605791d0ee4cbaaae74232ef94a94a31ac31039273294fbea583e674407fd8a2960d3722b9fbd22e38567dd6ba372cbe3725
+  checksum: 10c0/fde7fe97e964426d01cfb39623e7dfc68f2d936603d16c922d47a60a441524942a7603346c127650015188553bcc969c4db9d47cda05355e753379d72cd69dbf
   languageName: node
   linkType: hard
 
@@ -7583,7 +7583,7 @@ __metadata:
     "@types/webpack-env": "npm:^1.18.8"
     "@typescript-eslint/eslint-plugin": "npm:^8.67.0"
     "@typescript-eslint/parser": "npm:^8.67.0"
-    application-server-web-node-plugin: "npm:^1.0.404"
+    application-server-web-node-plugin: "npm:^1.0.405"
     clientnode: "npm:^4.0.1489"
     eslint: "npm:^10.9.0"
     eslint-config-google: "npm:^0.14.0"
