@@ -18,8 +18,7 @@ import type {
     Configuration, ServiceProcess, ServicePromises, Services
 } from './type'
 
-import {copy} from 'clientnode'
-import {configuration as baseConfiguration, loadAll, pluginAPI} from 'web-node'
+import {pluginAPI} from 'web-node'
 
 import {beforeAll, expect, test} from '@jest/globals'
 
@@ -27,10 +26,8 @@ import {checkReachability, loadService, shouldExit} from './index'
 // endregion
 // region mockup
 let configuration: Configuration
-beforeAll(async (): Promise<void> => {
+beforeAll(() => {
     configuration = {
-        ...(await loadAll(copy(baseConfiguration)))
-            .configuration,
         applicationServer: {proxy: {ports: {backend: {}}}}
     } as unknown as Configuration
 })
