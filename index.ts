@@ -134,7 +134,7 @@ export const loadService = async ({
         await checkReachability(configuration)
     } catch (error) {
         if (configuration.proxy.optional) {
-            log.warn(
+            void log.warn(
                 `Nginx couldn't be started (or at least`,
                 `"${configuration.proxy.url}" could not be reached) but was`,
                 'marked as optional.'
