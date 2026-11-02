@@ -85,6 +85,7 @@ export const loadService = async ({
         ): ChildProcess =>
             executeChildProcess(
                 'nginx -s reload',
+                {env: process.env},
                 (
                     error: ExecException | null,
                     standardOutput: string,
@@ -162,7 +163,7 @@ export const loadService = async ({
 export const shouldExit = async (
     {configuration, services}: ServicePromisesState
 ): Promise<void> => {
-    if (services.nginx !== null) {
+    if (services.nginx?.kill) {
         services.nginx.kill('SIGINT')
         await checkReachability(configuration.applicationServer, true)
     }
