@@ -1,6 +1,6 @@
 {
   "name": "nginxwebnodeplugin",
-  "version": "1.0.369",
+  "version": "1.0.370",
   "description": "A nginx proxy server configuration template for webNode.",
   "keywords": [
     "web",
