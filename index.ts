@@ -72,7 +72,11 @@ export const loadService = async ({
         {
             cwd: process.cwd(),
             env: process.env,
-            shell: true,
+            /*
+                NOTE: No shell here since e.g. "dash" (default "/bin/sh" on
+                debian) does not forward signals to its child so nginx could
+                not be stopped.
+            */
             stdio: 'inherit'
         }
     ) as ServiceProcess
