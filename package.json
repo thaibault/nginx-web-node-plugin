@@ -87,8 +87,7 @@
     "yarn": ">=4"
   },
   "webDocumentation": {
-    "name": "nginx-web-node-plugin",
-    "trackingCode": "UA-40192634-23"
+    "name": "nginx-web-node-plugin"
   },
   "webNode": {
     "applicationServer": {
