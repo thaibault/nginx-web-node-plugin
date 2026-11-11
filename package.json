@@ -87,6 +87,11 @@
     "yarn": ">=4"
   },
   "webDocumentation": {
+    "languages": [
+      "enUS",
+      "deDE",
+      "frFR"
+    ],
     "name": "nginx-web-node-plugin"
   },
   "webNode": {
