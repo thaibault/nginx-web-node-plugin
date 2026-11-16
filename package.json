@@ -74,6 +74,7 @@
   },
   "peerDependencies": {
     "application-server-web-node-plugin": "*",
+    "clientnode": "*",
     "core-js": "*",
     "node-fetch": "*",
     "web-node": "*"

@@ -7722,6 +7722,7 @@ __metadata:
     weboptimizer: "npm:^4.0.121"
   peerDependencies:
     application-server-web-node-plugin: "*"
+    clientnode: "*"
     core-js: "*"
     node-fetch: "*"
     web-node: "*"
