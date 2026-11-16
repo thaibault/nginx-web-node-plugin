@@ -7718,7 +7718,7 @@ __metadata:
     node-fetch: "npm:^3.3.2"
     typescript-eslint: "npm:^8.72.2"
     web-documentation: "npm:^1.0.76"
-    web-node: "npm:^1.0.641"
+    web-node: "npm:^1.0.642"
     weboptimizer: "npm:^4.0.121"
   peerDependencies:
     application-server-web-node-plugin: "*"
@@ -9240,15 +9240,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"web-node@npm:^1.0.641":
-  version: 1.0.641
-  resolution: "web-node@npm:1.0.641"
+"web-node@npm:^1.0.642":
+  version: 1.0.642
+  resolution: "web-node@npm:1.0.642"
   peerDependencies:
     clientnode: "*"
     core-js: "*"
   bin:
     web-node: dist/main.js
-  checksum: 10c0/05ecdae610deb7a0ccee790cdce553da0ba313abb065b6a8557bbfb517444b357acb141a14777d6c132fc5e74a8473386850c9c1dc436378d80ba26417329c27
+  checksum: 10c0/9e40e79dfcf8be1febe1cae29902cfeb3ca22a86b1db27f2f504dea23d088323e1e128dfea71f89318e930c5fe926e45dc4fe3d99fd5aa7338337f12dba1e91b
   languageName: node
   linkType: hard
 

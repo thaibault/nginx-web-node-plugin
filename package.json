@@ -69,7 +69,7 @@
     "node-fetch": "^3.3.2",
     "typescript-eslint": "^8.72.2",
     "web-documentation": "^1.0.76",
-    "web-node": "^1.0.641",
+    "web-node": "^1.0.642",
     "weboptimizer": "^4.0.121"
   },
   "peerDependencies": {
