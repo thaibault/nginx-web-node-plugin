@@ -19,6 +19,7 @@ import type {
     Configuration, ServiceProcess, ServicePromises, Services
 } from './type'
 
+import {ChildProcess} from 'child_process'
 import {chmodSync, mkdtempSync, rmSync, writeFileSync} from 'fs'
 import {createServer, Server} from 'http'
 import {tmpdir} from 'os'
@@ -204,13 +205,13 @@ esac
 describe('shouldExit', (): void => {
     test('running service', async (): Promise<void> => {
         let signal: NodeJS.Signals | number | undefined
-        const services: Services = {nginx: {
+        const services: Services = {nginx: Object.assign(new ChildProcess(), {
             kill: (givenSignal?: NodeJS.Signals | number): boolean => {
                 signal = givenSignal
 
                 return true
             }
-        } as ServiceProcess} as Services
+        }) as ServiceProcess} as Services
 
         await expect(shouldExit(getState(services))).resolves.toBeUndefined()
 
